@@ -1,0 +1,122 @@
+\usepackage{xparse}
+\usepackage{amssymb}
+\usepackage{eucal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Standard Notation %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\let\oldepsilon\epsilon
+\let\epsilon\varepsilon
+
+\let\oldphi\phi
+\let\phi\varphi
+
+\newcommand{\cF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+%%%%%%%%%%%%% Some Glue Notation
+\DeclareMathOperator*{\defn}{\stackrel{\operatorname{def}}{=}}
+\DeclareMathOperator*{\interior}{int}
+\DeclareMathOperator*{\cl}{cl}
+
+\newcommand{\asconv}{\stackrel{\operatorname{a.s.}}{\longrightarrow}}
+
+\newcommand{\psubsp}{\triangleleft}
+\newcommand{\subsp}{\trianglelefteq}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+
+%%%%%%%%%%%%% Commonly encountered sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+\RenewDocumentCommand{\S}{o}{
+    \mathbf{S}
+    \IfNoValueTF{#1}{}{^{#1}}
+}
+
+\NewDocumentCommand{\B}{o o}{
+    B
+    \IfNoValueTF{#2}{}{^{#2}}
+    \IfNoValueTF{#1}{}{_{#1}}
+}
+
+\newcommand{\Lsym}{L}
+\RenewDocumentCommand{\L}{o o}{
+    \Lsym
+    \IfNoValueTF{#1}{}{^{#1}}
+    \IfNoValueTF{#2}{}{\left( #2 \right)}
+}
+\newcommand{\Lp}{\L[p]}
+\newcommand{\Lq}{\L[q]}
+
+\RenewDocumentCommand{\l}{o o}{
+    \ell
+    \IfNoValueTF{#1}{}{^{#1}
+    \IfNoValueTF{#2}{}{_{#2}}}
+}
+
+\newcommand{\llinfty}{\l[\infty]}
+
+\DeclareMathOperator*{\spn}{span}
+\DeclareMathOperator*{\ran}{ran}
+
+%%%%%%%%%%%%% Common Functionals, Measures, Operators
+\DeclareMathOperator{\Exp}{\mathbb{E}}
+
+\DeclareMathOperator{\Id}{Id}
+
+\NewDocumentCommand{\T}{o}{
+    \IfNoValueTF{#1}{\cdot^{\top}}{{#1}^{\top}}
+}
+
+\NewDocumentCommand{\inv}{o}{
+    \IfNoValueTF{#1}{\cdot^{-1}}{{#1}^{-1}}
+}
+
+\newcommand{\At}{\T[A]}
+\newcommand{\Ainv}{\inv[A]}
+
+\renewcommand{\d}{\mathrm{d}}
+\NewDocumentCommand{\intt}{o o o o}{
+    \int
+    \IfNoValueTF{#1}{}{_{#1}}
+    \IfNoValueTF{#2}{}{^{#2}}
+    \IfNoValueTF{#3}{}{#3}\, 
+    \IfNoValueTF{#4}{}{\d #4}
+}
+
+\NewDocumentCommand{\abs}{o}{
+    \left\lvert
+        \IfNoValueTF{#1}{\cdot}{#1}
+    \right\rvert
+}
+
+\NewDocumentCommand{\norm}{o o}{
+    \left\lVert
+        \IfNoValueTF{#1}{\cdot}{#1}
+    \right\rVert
+    \IfNoValueTF{#2}{}{\IfBlankTF{#2}{}{_{#2}}}
+}
+
+\NewDocumentCommand{\inn}{o o o}{
+    \left(
+    \IfNoValueTF{#1}{\cdot}{#1}
+    \mid
+    \IfNoValueTF{#2}{\cdot}{#2}
+    \right)
+    \IfNoValueTF{#3}{}{_{#3}}
+}
+
+\DeclareMathOperator{\Prsym}{\mathbb{P}}
+\RenewDocumentCommand{\Pr}{o}{
+    \Prsym
+    \IfNoValueTF{#1}{}{\left\{{#1}\right\}}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{exercise}[theorem]{Exercise}
+
+\newcommand*{\from}{\colon}

@@ -1,0 +1,229 @@
+% Magic Comments
+% !TeX spellcheck = en_GB
+% !TeX encoding = utf8
+% !TeX program = pdflatex
+
+\documentclass[12pt]{amsart}
+
+\title{Mathematical Finance in discrete time}
+\author{Elias Mindlberger}
+\date{Winter Semester 2025/26}
+
+\input{macros}
+\input{style}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\bigskip
+
+\section{Introduction and first example}
+
+We start by introducing the first important notions of option pricing and first examples.
+
+\subsection{Notions for option pricing theory}
+
+An \textbf{option} is a contract beween two parties (a buyer and a seller). The buyer pays an option price \emph{today} (i.e.\ at \(t=0\)) to the seller and in return obtains the right/\emph{option} \underline{but not the obligation} to buy a stock for conditions that are fixed \emph{today} at a fixed point in time (\emph{the maturity of the option}).
+The option to buy is thereby crucial: the buyer can just refrain from buying the stock if te market conditions are disadvantageous.
+
+We only consider options whose \emph{underlyings (german: Basistitel)} are stocks.\newpage
+
+We distinguish the following:
+
+\begin{tikzpicture}[>=stealth, thick]
+    % Arrows for call and put
+    \draw[->] (-3,0) -- (3,2);
+    \draw[->] (-3,0) -- (3,-2);
+
+    % Labels
+    \node at (4.5,2) {\textbf{Call option}};
+    \node at (4.5,-2) {\textbf{Put option}};
+
+    % Text below arrows
+    \node[align=left] at (6,1) {Buyer has the right to \underline{buy} \\ the stock for the \emph{strike price} \(K\).};
+    \node[align=left] at (6,-3) {Buyer has the right to \underline{sell} \\ the stock for the \emph{strike price} \(K\).};
+
+    % Arrows for call and put
+    \draw[->] (-3,-7) -- (3,-5);
+    \draw[->] (-3,-7) -- (3,-9);
+
+    % Labels
+    \node at (5,-5) {\textbf{European option}};
+    \node at (5,-9) {\textbf{American option}};
+
+    % Text below arrows
+    \node[align=left] at (6.5,-5.7) {Can only be exercised at maturity \(T\).};
+    \node[align=left] at (6.5,-9.7) {Can be exercised at \(t\) s.t.\ \(0 \leq t \leq T\).};
+\end{tikzpicture}
+
+We call the above \textbf{standard} or \textbf{vanilla} options. Other \emph{options} (pun intended) are called \textbf{exotic}. Such include \emph{Asian options} (which operate on the mean--value of an asset), \emph{barrier options}, \emph{options on voatility} and so forth. For this course we assume that options have a price at any point in time \(0 \leq t \leq T\). Advantages of options include
+\begin{itemize}
+    \item The loss is limited: worst case is the loss of the option price,
+    \item leverage effect (in a positive market development),
+    \item can be used to \emph{hedge} against decreasing stock prices via put options (can be sold for a fixed pre--determined price).
+\end{itemize}
+
+\subsection{A first example}
+
+Let us consider a call option in a two--period market model. We set
+\begin{itemize}
+    \item \(t=0\): the current time or today,
+    \item \(T>0\): the maturity or exercise date of the option,
+    \item \(S_T\): random price of the underlying stock at time \(T\),
+    \item \(S_0\): known price of the underlying stock at time \(t=0\),
+    \item \(K\): the strike price.
+\end{itemize}
+
+\begin{remark}
+    No physical transaction of the stock at time \(T\) happens. Only the profit is paid out accordingly.
+\end{remark}
+Clearly, the \textbf{payoff} for a call option at time \(T\) is \[
+    H = \max \set{S_T-K, 0} = \left(S_T-K\right)^+.
+\]
+\(H\) itself is a random variable since \(S_T\) is assumed to be random.
+
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines=middle,
+            samples=200,
+            domain=-1:4,
+            ymin=-0.5, ymax=3,
+            xmin=-1, xmax=4,
+            axis line style={->, thick},
+            xtick=\empty,
+            ytick=\empty,
+            xlabel={\(S_T\)},
+            ylabel={Payoff},
+            width=8cm,
+            height=6cm
+        ]
+
+        % Dashed part for x < K
+        \addplot[blue, ultra thick, dashed, domain=-1:1.5] {0};
+
+        % Solid part for x >= K
+        \addplot[blue, ultra thick, domain=1.5:4] {x-1.5};
+
+        % Mark K
+        \draw[dashed, gray] (axis cs:1.5,0) -- (axis cs:1.5,1.5);
+        \filldraw[black] (axis cs:1.5,0) circle (1.5pt) node[below] {\(K\)};
+
+        % Function label
+        \node[blue, above right] at (axis cs:3,1) {\(H\)};
+
+        \end{axis}
+    \end{tikzpicture}
+
+    \vspace{0.5em}
+    \small\textbf{Figure:} Visualisation of the payoff \(H\) dependent on the strike \(K\).
+\end{center}
+
+Take \(S_0=100\) and assume the stock can attain two prices at \(T\). Either it attains \(150\) in the case of \(\omega_1\) or it attains \(90\) in the case of \(\omega_2\), i.e.\ \(S_T(\omega_1) = 150\) and \(S_T(\omega_2) = 90\) with probabilities \(p\) and \(1-p\) respectively. We let \(130\) be the strike \(K\). The payoff is obviously \(20\) and \(0\) respectively. We assume that there is an additional, riskless investment opportunity with interest rate \(r=0\).
+
+\textbf{Question.} What is the fair price \(\pi(H)\) of the above option at \(t=0\)?
+
+\textbf{Idea: No--arbitrage--principle.}
+There is no arbitrage (i.e.\ no riskless profit) in the financial market.
+
+The payoff \(H\) is replicated by other assets (in this case stocks and riskless investments).
+
+The initial capital that is needed in order to replicate \(H\) corresponds to the price of the option. Otherwise, there is arbitrage.
+
+We now want to find a \textbf{trading strategy} \((\alpha, \beta) \in \R^2\) with
+\begin{itemize}
+    \item \(\alpha\), the number of stocks that we buy at \(t=0\),
+    \item \(\beta\), the investment in the riskless asset (RA).
+\end{itemize}
+
+The value of the portfolio at \(t=0\) is \(V_0(\alpha, \beta) = \beta \cdot 1 + \alpha S_0\) (the RA is normalised) and the value of the portfolio at \(t=T\) is \(V_T(\alpha, \beta) = \beta \cdot 1 + \alpha S_T\) (recall \(r=0\)). We want to \emph{hedge} or \emph{replicate} the payoff, i.e.\ choose \((\alpha, \beta)\) such that \(V_T(\alpha, \beta) = H\). This means \(\beta+\alpha S_T(\omega) = H(\omega)\) for any \(\omega \in \set{\omega_1, \omega_2}\). Hence, we get a system of linear equations.
+
+\begin{align*}
+    \beta + 150\alpha &= 20\\
+    \beta + 90 \alpha &= -0.
+\end{align*}
+Solving this for \(\alpha, \beta\) yields \(\alpha=1/3\) and \(\beta=-30\). Hence \[
+    V_0(\alpha, \beta) = -30 + 100/3 = 10/3 = \pi(H).
+\]
+The hedging strategy that we get is to borrow \(30\) today and buy \(1/3\) stocks. The overall investment is \(10/3\). Two scenarios can happen at \(t=T\):
+\begin{enumerate}
+    \item \(S_T=150\). Selling the stock yields \(1/3 \cdot 150 = 50\). We repay our debt of \(30\) and yield \(20\) as profit.
+    \item \(S_T=90\). Selling the stock yields \(1/3 \cdot 90 = 30\). We repay the debt and nothing happens.
+\end{enumerate}
+As we see, we hedged \(H\) perfectly. Now assume that we \underline{sell} the call option at a price of \(10/3\) and invest. Then, the following can happen.
+
+\begin{enumerate}
+    \item \(S_T=150\). The buyer will exercise the call, he or she will buy the stock for \(130\) from us,
+    \item we have to buy the stock for \(150\), we lose \(20\),
+    \item but we obtain \(20\) as by hedging in (1).
+\end{enumerate}
+
+\begin{enumerate}
+    \item \(S_T=90\). Goes analogously.
+\end{enumerate}
+
+Using the no--arbitrage--principle, the fair price of the option is \(\pi(H)=10/3\). For any other price, a riskless profit would be possible. Assume \(\pi(H) > 10/3\). Then we get the following table:
+
+\begin{table}[h!]
+    \centering
+        \begin{tabular}{ll}
+            \toprule
+            \textbf{Action at \(t=0\)} & \textbf{Payoff at \(t=T\)} \\
+            \midrule
+            Sell \(\pi(H)\) & \(-(S_T-K)^+\)\\
+            Borrow \(30\) RA & \(-30\)\\
+            Buy \(S_0/3\) & \(S_T/3\)\\
+            Profit: \(\pi(H)+30-S_0/3=\pi(H)-10/3>0\) & \(\Sigma=0\) \\
+            \bottomrule
+        \end{tabular}
+    \caption{Unfair pricing shows the possibility of riskless profit.}
+\end{table}
+
+Assume now \(\pi(H) < 10/3\). The table goes analogous to the above.
+
+\begin{remark}
+    Notice that the fair price \(\pi(H)\) in this example is \textbf{independent} of the subjective probability \(p\)! In more sophisticated models, we will also adapt to this.
+\end{remark}
+
+\subsection{Market assumptions}
+
+In this section, we used a perfect market model.
+\begin{itemize}
+    \item The markets are frictionless, i.e.\ there are no taxes on profits and no transaction costs for reallocating portfolios,
+    \item short--selling is allowed at all times and arbitrary shares can be bought and sold,
+    \item interest rates for borrowing and lending are te same as well as investments in RA,
+    \item there are no dividend payments,
+    \item all market participants are rational and maximise their utility.
+\end{itemize}
+
+In a perfect market there is no arbitrage. Supply and demand offset each other perfectly and there are unique prices.
+
+\section{Financial markets and the finite state space}
+
+Our goal here is to introduce general financial markets. Finite means that there is a finite number of market states and a finite number of trading times \(\set{0, \dots, T}\). We describe trading strategies, arbitrage strategies and options formally.
+
+\subsection{Financial market}
+
+We take \((\Omega, \cF, (\cF_t)_{t}, \P)\) to be a filtered probability space. I.e.\
+\begin{itemize}
+    \item \(\Omega\) is a finite state space of elementary events,
+    \item \(\cF\) is the power set of \(\Omega\) and acts as the \(\sigma\)-algebra,
+    \item \((\cF_t)_t\) is a filtration,
+    \item \(\P: \cF \to [0, 1]\) is a probability measure.
+\end{itemize}
+
+\begin{remark}
+    We remark that for a probability space \((\Omega, \cF, \P)\) and an \underline{ordered} index set \(I\), a family of \(\cF\)-sub-\(\sigma\)-algebras \((\cF_i)_{i \in I}\) is a filtration if and only if for any \(t, s \in I: t \leq s \implies \cF_t \subseteq \cF_s\). Since our index sets \(I\) are always finite with maximal element \(T\), we make the additional presumption that \(\cF = \cF_T\).
+\end{remark}
+
+\section{The Cox--Ross--Rubinstein model}
+\section{Absence of arbitrage and equivalent martingale measures}
+\section{Completeness and equivalent martingale measures}
+\section{Risk--neutral pricing of contingent claims}
+\section{American options}
+\section{Portfolio optimization}
+
+\end{document}
