@@ -1,0 +1,1 @@
+These notes were compiled by myself as a masters student during the course Mathematical Finance (Finanzmathematik) at JKU Linz in the Winter Semester 2025/26. They are not official lecture notes and may contain errors or omissions.
