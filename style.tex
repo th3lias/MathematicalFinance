@@ -4,19 +4,36 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{xparse}
+\usepackage{eucal}
+
 
 \pgfplotsset{compat=1.18}
 \tcbuselibrary{theorems}
 
-\newtcbtheorem
-  []% init options
-  {definition}% name
-  {Definition}% title
-  {%
-    colback=blue!5,
-    colframe=blue!40!black,
-    fonttitle=\bfseries,
-  }% options
-  {def}% prefix
+\newtcolorbox[auto counter, number within=section]{definition}[1][]{%
+  colback=blue!5,
+  colframe=blue!40!black,
+  fonttitle=\bfseries,
+  title={Definition~\thetcbcounter\ifstrempty{#1}{}{: #1}},
+}
+
+\newtcolorbox[auto counter, number within=section]{lemma}[1][]{%
+  colback=green!5,
+  colframe=green!40!black,
+  fonttitle=\bfseries,
+  title={Lemma~\thetcbcounter\ifstrempty{#1}{}{: #1}},
+}
+
+\newtcolorbox[auto counter, number within=section]{theorem}[1][]{%
+  colback=red!5,
+  colframe=red!40!black,
+  fonttitle=\bfseries,
+  title={Theorem~\thetcbcounter\ifstrempty{#1}{}{: #1}},
+}
+
+\newtheorem{corollary}[section]{Corollary}
+\newtheorem{exercise}[section]{Exercise}
 
 \newtheorem*{remark}{Remark}
