@@ -291,7 +291,7 @@ Hence if the initial wealth \(V_0^\phi\) is known, every \(\alpha \in \cA\) can 
     \(\Delta X_t = X_t - X_{t-1}\), \(\Delta \alpha_t = (\Delta \alpha_t^1, \dots, \Delta \alpha_t^d)\).
 \end{remark}
 
-\begin{lemma}
+\begin{lemma}\label{le:SELFF_TO_BETA}
     Let \(\phi\) be self-financing. Then we have \[
         \beta_t = \beta_0 - \sum_{k=1}^t \Delta \alpha_n \frac{S_n}{B_n} = V_0^\phi - \sum_{k=0}^t \Delta \alpha_n \frac{S_n}{B_n},
     \]
@@ -498,7 +498,7 @@ With this definition we get the following lemma.
     Suppose absence of arbitrage (NA). Then, the price \(\pi(H)\) for an attainable contingent claim \(H\) is unique and thus independent of the choice of hedging strategy.
 \end{lemma}
 \begin{proof}
-    Let \(H\) be an attainable contingent claim. Let \(\phi = (\alpha, \beta)\) and \(\tilde{\phi} = (\tilde{\alpha}, \tilde{\beta})\) be hedging strategies for \(H\). By Lemma 2.1, \(\phi, \tilde{\phi}\) can be expressed via \((V_0^\phi, \alpha), (V_0^{\tilde{\phi}}, \tilde{\alpha})\) and by lemma 2.2, \[
+    Let \(H\) be an attainable contingent claim. Let \(\phi = (\alpha, \beta)\) and \(\tilde{\phi} = (\tilde{\alpha}, \tilde{\beta})\) be hedging strategies for \(H\). By \Cref{le:SELFF_TO_BETA}, \(\phi, \tilde{\phi}\) can be expressed via \((V_0^\phi, \alpha), (V_0^{\tilde{\phi}}, \tilde{\alpha})\) and by lemma 2.2, \[
         V_0^\phi + G_T^\alpha = \frac{H}{B_T} = V_0^{\tilde{\phi}} + G_T^{\tilde{\alpha}}
     \]
     and \(H = V_T^\phi = V_T^{\tilde{\phi}}\) as \(\phi\) and \(\tilde{\phi}\) are hedging strategies. Assume \(d = V_0^{\tilde{\phi}} - V_0^\phi > 0\). Then
@@ -509,7 +509,7 @@ With this definition we get the following lemma.
         &= -d + \sum_{n=1}^T \left( \alpha_{n-1} - \tilde{\alpha}_{n-1} \right) \cdot \Delta \tilde{S}_{n}\\
         &= -d + G_T^{\alpha-\tilde \alpha} \implies G_T^{\alpha - \tilde \alpha} = d > 0.
     \end{align*}
-    Now, \(\psi\) is an arbitrage strategy, where \(\psi \defn (\hat{\alpha}, \hat{\beta})\) where \(\hat{\alpha} \defn \alpha - \tilde{\alpha}\) and \(\hat{\beta}\) is determined by lemma 2.1 with \(V_0^\phi = 0\). This is a contradiction to (NA).
+    Now, \(\psi\) is an arbitrage strategy, where \(\psi \defn (\hat{\alpha}, \hat{\beta})\) where \(\hat{\alpha} \defn \alpha - \tilde{\alpha}\) and \(\hat{\beta}\) is determined by \Cref{le:SELFF_TO_BETA} with \(V_0^\phi = 0\). This is a contradiction to (NA).
 \end{proof}
 
 \begin{example}
@@ -591,7 +591,7 @@ The basic question we want to ask is: \emph{When is this model free of arbitrage
     Consider the one-period CRR model. Then, the market is free of arbitrage if and only if \(d < 1 + r < u\).
 \end{theorem}
 \begin{proof}
-    Let's assume \(d < 1+r < u\) or equivalently \(\frac{dS_0}{1+r} - S_0 < 0 < \frac{u S_0}{1+r} - S_0\). Hence, \(S_1(d)/(1+r)-S_0 < 0 < S_1(u)/(1+r)-S_0\). Now, \(\tilde{S} = S/B\) with \(B_1 = 1+r\). We get \(\tilde{S}_1(d) - S_0 < 0 < \tilde{S}_1(u) - S_0\) and by noting \(\tilde{S_0} = S_0\) and applying theorem 2.1, we get that there exists an \(\omega\) and some \(\eta \neq 0\) such that \(\eta(\tilde{S_n}(\omega) - \tilde{S}_0) < 0\), which implies that there is no arbitrage.
+    Let's assume \(d < 1+r < u\) or equivalently \(\frac{dS_0}{1+r} - S_0 < 0 < \frac{u S_0}{1+r} - S_0\). Hence, \(S_1(d)/(1+r)-S_0 < 0 < S_1(u)/(1+r)-S_0\). Now, \(\tilde{S} = S/B\) with \(B_1 = 1+r\). We get \(\tilde{S}_1(d) - S_0 < 0 < \tilde{S}_1(u) - S_0\) and by noting \(\tilde{S_0} = S_0\) and applying \Cref{th:ARB_STRAT_EQUIV}, we get that there exists an \(\omega\) and some \(\eta \neq 0\) such that \(\eta(\tilde{S_n}(\omega) - \tilde{S}_0) < 0\), which implies that there is no arbitrage.
 \end{proof}
 
 What can we say about completeness?
