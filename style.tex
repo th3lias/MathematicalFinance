@@ -7,6 +7,8 @@
 \usepackage{amssymb}
 \usepackage{xparse}
 \usepackage{eucal}
+\usepackage{dsfont}
+\usepackage{enumitem}
 
 
 \pgfplotsset{compat=1.18}
@@ -33,7 +35,7 @@
   title={Theorem~\thetcbcounter\ifstrempty{#1}{}{: #1}},
 }
 
-\newtheorem{corollary}[section]{Corollary}
-\newtheorem{exercise}[section]{Exercise}
+\newtheorem{corollary}[subsection]{Corollary}
+\newtheorem{exercise}[subsection]{Exercise}
 
 \newtheorem*{remark}{Remark}

@@ -11,6 +11,7 @@
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\cA}{\mathcal{A}}
 \renewcommand{\P}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
 
 %%%%%%%%%%%%% Some Glue Notation
 \DeclareMathOperator*{\defn}{\stackrel{\operatorname{def}}{=}}
@@ -59,7 +60,7 @@
 \DeclareMathOperator*{\ran}{ran}
 
 %%%%%%%%%%%%% Common Functionals, Measures, Operators
-\DeclareMathOperator{\Exp}{\mathbb{E}}
+\DeclareMathOperator{\E}{\mathbb{E}}
 
 \DeclareMathOperator{\Id}{Id}
 
@@ -73,6 +74,11 @@
 
 \newcommand{\At}{\T[A]}
 \newcommand{\Ainv}{\inv[A]}
+
+\NewDocumentCommand{\indic}{o}{
+    \mathds{1}
+    \IfNoValueTF{#1}{}{_{\set{#1}}}
+}
 
 \renewcommand{\d}{\mathrm{d}}
 \NewDocumentCommand{\intt}{o o o o}{

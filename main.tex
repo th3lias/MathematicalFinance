@@ -380,10 +380,10 @@ In words, the next theorem tells us that a financial market is globally free of 
         \alpha_{t-1} \cdot (\tilde{S}_t - \tilde{S}_{t-1}) = \frac{V_T^\phi}{B_t} - \frac{V_{t-1}^\phi}{B_{t-1}} = \frac{V_t^\phi}{B_t} \geq 0.
     \]
     Using \(\eta = \alpha_{t-1}\) we obtain \(\P(\eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) > 0) > 0\) for some development of \(S_t\) and moreover \(\P(\eta \cdot (\tilde{S}_n - \tilde{S}_{n-1}) \geq 0) = 1\). In case (b) we get by \[
-        \eta = \alpha_{t-1} \chi_{\set{V_{t-1}^\phi < 0}}
+        \eta = \alpha_{t-1} \indic[V_{t-1}^\phi < 0]
     \]
     that \[
-        \eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) = \left(\frac{V_t^\phi}{B_t} - \frac{V_{t-1}^\phi}{B_{t-1}}\right) \cdot \chi_{V_{t-1}^\phi < 0} \geq \frac{V_t^\phi}{B_t} \chi_{V_{t-1}^\phi < 0}
+        \eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) = \left(\frac{V_t^\phi}{B_t} - \frac{V_{t-1}^\phi}{B_{t-1}}\right) \cdot \indic[V_{t-1}^\phi < 0] \geq \frac{V_t^\phi}{B_t} \indic[V_{t-1}^\phi < 0]
     \]
     and hence \(\P(\eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) \geq 0) = 1\) and \(\P(\eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) > 0) > 0\).
 
@@ -403,8 +403,165 @@ In words, the next theorem tells us that a financial market is globally free of 
     We assume a financial markets with \(T=2\) periods and a RA with \(B_0 = B_1 = B_2 = 1\).
 \end{exercise}
 
+\color{red}
+Graphics for examples: TBD.
+\color{black}
+
+\subsection{Options}
+
+Options are characterised by the payoff. For \emph{european options}, the payoff happens at exercise date \(T\).
+
+\begin{definition}[Contingent Claim]
+    A contingent claim is an \(\cF_T\)-measurable random variable \(H\) with values in \(\R\).
+\end{definition}
+\begin{remark}
+    If \(H \in \cF_T^S\), then \(H = h(S_0, \dots, S_T)\).
+\end{remark}
+
+\begin{exercise}[Examples of Contingent Claims]
+    \textbf{European call options} with strike price \(K\): \[
+        H = (S_T-K)^+
+    \]
+    is only exercised when \(S_T > K\).
+    \textbf{European put options} with strike \(K\): \[
+        H = (K-S_T)^+
+    \]
+    is only exercised when \(S_T < K\). A \textbf{Future} is delivered with certainty, thus \[
+        H = S_T-K.
+    \]
+    Here, \(K\) is a fixed reference price and \(T\) the delivery date.
+    A \textbf{digital call option} with strike \(K\):
+    \[
+        H = \indic[S_T>K]
+    \]
+    yields payoff of \(1\) unit if \(S_T>K\). A \textbf{down-and-out-call} with strike \(K\) and barrier \(B\):\[
+        H = (S_T-K)^+ \indic[\min_{t \in \set{0, \dots, T}} S_t > B]
+    \]
+    depends on the whole path of \(S\). These are cheaper than classical options. \textbf{Asian call options} are characterised by \[
+        H = \left( S_T-\frac{1}{T}\sum_{t=1}^T S_t \right)^+
+    \]
+    is only exercised when the stock price is greater than the arithmetic mean. Also these are obviously path-dependent.
+\end{exercise}
+
+\begin{definition}[Attainability and completeness]
+    \begin{enumerate}[label=(\alph*)]
+        \item A contingent claim \(H\) is attainable if there is a trading strategy \(\phi\) with \(V_T^\phi = H\). Then \(\pi(H) = V_0^\phi\) is called a price of \(H\) and \(\phi\) is called duplication/replication/hedging strategy of \(H\).
+        \item We say a market is complete if any contingent claim is attainable.
+    \end{enumerate}
+\end{definition}
+
+With this definition we get the following lemma.
+
+\begin{lemma}[Price of attainable claims]
+    Suppose absence of arbitrage (NA). Then, the price \(\pi(H)\) for an attainable contingent claim \(H\) is unique and thus independent of the choice of hedging strategy.
+\end{lemma}
+\begin{proof}
+    Let \(H\) be an attainable contingent claim. Let \(\phi = (\alpha, \beta)\) and \(\tilde{\phi} = (\tilde{\alpha}, \tilde{\beta})\) be hedging strategies for \(H\). By Lemma 2.1, \(\phi, \tilde{\phi}\) can be expressed via \((V_0^\phi, \alpha), (V_0^{\tilde{\phi}}, \tilde{\alpha})\) and by lemma 2.2, \[
+        V_0^\phi + G_T^\alpha = \frac{H}{B_T} = V_0^{\tilde{\phi}} + G_T^{\tilde{\alpha}}
+    \]
+    and \(H = V_T^\phi = V_T^{\tilde{\phi}}\) as \(\phi\) and \(\tilde{\phi}\) are hedging strategies. Assume \(d = V_0^{\tilde{\phi}} - V_0^\phi > 0\). Then
+    \begin{align*}
+        0
+        &= V_0^\phi - V_0^{\tilde{\phi}} - G_T^{\tilde{\alpha}} + G_T^\alpha\\
+        &= -d - G_T^{\tilde{\alpha}} + G_T^{\alpha}\\
+        &= -d + \sum_{n=1}^T \left( \alpha_{n-1} - \tilde{\alpha}_{n-1} \right) \cdot \Delta \tilde{S}_{n}\\
+        &= -d + G_T^{\alpha-\tilde \alpha} \implies G_T^{\alpha - \tilde \alpha} = d > 0.
+    \end{align*}
+    Now, \(\psi\) is an arbitrage strategy, where \(\psi \defn (\hat{\alpha}, \hat{\beta})\) where \(\hat{\alpha} \defn \alpha - \tilde{\alpha}\) and \(\hat{\beta}\) is determined by lemma 2.1 with \(V_0^\phi = 0\). This is a contradiction to (NA).
+\end{proof}
+
+\color{red}
+Exercise to be added.
+\color{black}
+
+\begin{remark}
+    All considerations in this section are without accounting for transaction costs.
+\end{remark}
 
 \section{The Cox--Ross--Rubinstein model}
+
+This is a simple model in discrete time. We assume \(1\) riskless asset and \(1\) risky asset.
+
+\subsection{One-period CRR model}
+
+We assume \(T=1\) and \(\Omega=\set{u, d}\) and \(\cF_T = \cF = 2^\Omega\). For the riskless asset, we set \(B_0=1\) and \(B_1 = 1+r,\, r \geq 0\). For the risky asset, we assume a random variable \(S_0 > 0\) and \[
+    S_1(\omega) = \begin{cases}
+        uS_0, &\omega=u\\
+        dS_0, &\omega=d
+    \end{cases}
+\]
+for functions \(0 < d < u\). We then call \(u\) \emph{up-factor} and \(d\) the \emph{down-factor}. The case \(u=d\) is not interesting since it reduces to a deterministic case.
+
+The basic question we want to ask is: \emph{When is this model free of arbitrage?}
+
+\begin{theorem}\label{th:CRR_NA}
+    Consider the one-period CRR model. Then, the market is free of arbitrage if and only if \(d < 1 + r < u\).
+\end{theorem}
+\begin{proof}
+    Let's assume \(d < 1+r < u\) or equivalently \(\frac{dS_0}{1+r} - S_0 < 0 < \frac{u S_0}{1+r} - S_0\). Hence, \(S_1(d)/(1+r)-S_0 < 0 < S_1(u)/(1+r)-S_0\). Now, \(\tilde{S} = S/B\) with \(B_1 = 1+r\). We get \(\tilde{S}_1(d) - S_0 < 0 < \tilde{S}_1(u) - S_0\) and by noting \(\tilde{S_0} = S_0\) and applying theorem 2.1, we get that there exists an \(\omega\) and some \(\eta \neq 0\) such that \(\eta(\tilde{S_n}(\omega) - \tilde{S}_0) < 0\), which implies that there is no arbitrage.
+\end{proof}
+
+What can we say about completeness?
+
+\begin{theorem}\label{th:CRR_COMPLETE}
+    Suppose there is no arbitrage. Then the CRR model is complete. In particular, \[
+        \alpha_0 = \frac{H(u) - H(d)}{(u-d)S_0}, \quad \beta_0 = \frac{uH(d) - dH(u)}{(u-d)(1+r)}.
+    \]
+    Then, \(\pi(H) = \frac{uH(d) - dH(u)}{(u-d)(1+r)} + \frac{H(u)-H(d)}{u-d}\) is the unique price.
+\end{theorem}
+\begin{proof}
+    If \(\phi\) is a hedging strategy, then at \(T=1\), we have \[
+        V_1^\phi = \beta_0(1+r) + \alpha_0 S_1 = H.
+    \]
+    Hence, \begin{align*}
+        \beta_0(1+r) + \alpha_0 \underbrace{S_1(u)}_{uS_0} &= H(u)\\
+        \beta_0 (1+r) + \alpha_0 \underbrace{S_1(d)}_{dS_0} &= H(d).
+    \end{align*}
+    Some calculating yields \(\alpha_0=\frac{H(u)-H(d)}{(u-d)S_0}\) and \(\beta_0=\frac{uH(d)-dH(u)}{(u-d)(1+r)}\). Obviously, \(\pi(H)=V_0^\phi=\beta_0B_0+\alpha_0S_0\).
+\end{proof}
+
+\begin{exercise}
+    Let \(u=1.1\) and \(d=0.9\) and \(r=0.05\). Due to (theorem \ref{th:CRR_NA}), the market is free of arbitrage. Let \(S_0 = 100\) and \(H(u)=80\) and \(H(d)=60\). The price due to (theorem \ref{th:CRR_COMPLETE}) is \[
+        \pi(H) = \frac{1.1 \cdot 60 - 0.9 \cdot 80}{(1.1 - 0.9) 1.05} + \frac{80-60}{1.1-0.9} = 71.42.
+    \]
+    The corresponding hedging strategy is \[
+        \alpha_0 = \frac{80-60}{0.2 \cdot 100} = 1
+    \]
+    and \[
+        \beta_0 = -28.57.
+    \]
+\end{exercise}
+
+\begin{remark}[Preparatory remark on Equivalent Martingale Measures (EMMs)]
+    We can rearrange \(\pi(H)\) from before as \[
+        \pi(H) = \frac{H(u)}{1+r} \cdot \frac{1+r-d}{u-d} + \frac{H(d)}{1+r} \left(1-\frac{1+r-d}{u-d}\right) =: \star.
+    \]
+    This can be seen from \begin{align*}
+        \star
+        &= \frac{H(u)}{1+r}\left(\frac{1+r}{u-d}-\frac{d}{u-d}\right) + \frac{H(d)}{1+r}\left(1-\frac{1+r}{u-d}+\frac{d}{u-d}\right)\\
+        &= \frac{H(u)}{u-d} - \frac{dH(u)}{(1+r)(u-d)} + \frac{H(d)}{1+r} - \frac{H(d)}{u-d} + \frac{d H(d)}{(1+r)(u-d)}\\
+        &= \frac{H(u)-H(d)}{u-d} + \frac{dH(d)-dH(u)}{(1+r)(u-d)}+\frac{H(d)}{1+r}\\
+        &= \frac{H(u)-H(d)}{u-d} + \frac{dH(d)-dH(u)+uH(d)-dH(d)}{(1+r)(u-d)}\\
+        &= \frac{H(u)-H(d)}{u-d} + \frac{uH(d)-dH(u)}{(1+r)(u-d)} = \pi(H).
+    \end{align*}
+    We fix \(q \defn \frac{1+r-d}{u-d}\) and hence \(0 < q < 1\) as by (NA) we know that \(d<1+r<u\) and thus \[
+        \pi(H) = \frac{H(u)}{1+r}q+\frac{H(d)}{1+r}(1-q).
+    \]
+    Define the probability measure \(\Q\) on \((\Omega, \cF_T)\) as \[
+        \Q(\set{u}) = q, \quad \Q(\set{d})=1-q.
+    \]
+    Hence, \(\pi(H) = \E_\Q \left[ \frac{H}{1+r} \right]\) where \(\E_\Q\) is the expectation w.r.t.\ \(\Q\).
+    We obtain for the discounted price \(\tilde{S}_1 = \frac{S_1}{B_1}\) that
+    \begin{align*}
+        \E_\Q \tilde{S}_1
+        &= S_0 \left( \frac{u}{1+r}q + \frac{d}{1+r}(1-q) \right)\\
+        &= S_0 \left( q \left[ \frac{u}{1+r}-\frac{d}{1+r} \right] + \frac{d}{1+r} \right)\\
+        &= S_0 \left( \frac{1+r-d}{u-d} \frac{u-d}{1+r} + \frac{d}{1+r} \right)\\
+        &= S_0 \left( \frac{1+r-d+d}{1+r} \right) = S_0 = \tilde{S}_1.
+    \end{align*}
+    Hence, discounted stock prices are martingales with respect to the risk-neutral measure. One can even show that the measure \(\Q\) is the only (i.e.\ unique) measure that satisfies the martingale property \(\E_\Q \tilde{S}_1 = \tilde{S}_0\).
+\end{remark}
+
 \section{Absence of arbitrage and equivalent martingale measures}
 \section{Completeness and equivalent martingale measures}
 \section{Risk--neutral pricing of contingent claims}
