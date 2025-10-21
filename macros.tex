@@ -8,10 +8,16 @@
 \let\oldphi\phi
 \let\phi\varphi
 
+% mathbb
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\cA}{\mathcal{A}}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\Q}{\mathbb{Q}}
+
+% tilde
+\newcommand{\tS}{\tilde{S}}
 
 %%%%%%%%%%%%% Some Glue Notation
 \DeclareMathOperator*{\defn}{\stackrel{\operatorname{def}}{=}}
@@ -19,26 +25,24 @@
 \DeclareMathOperator*{\cl}{cl}
 
 \newcommand{\asconv}{\stackrel{\operatorname{a.s.}}{\longrightarrow}}
-
 \newcommand{\psubsp}{\triangleleft}
 \newcommand{\subsp}{\trianglelefteq}
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 
-%%%%%%%%%%%%% Commonly encountered sets
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-
+% Sphere
 \RenewDocumentCommand{\S}{o}{
     \mathbf{S}
     \IfNoValueTF{#1}{}{^{#1}}
 }
 
+% Ball
 \NewDocumentCommand{\B}{o o}{
     B
     \IfNoValueTF{#2}{}{^{#2}}
     \IfNoValueTF{#1}{}{_{#1}}
 }
 
+% Lp spaces
 \newcommand{\Lsym}{L}
 \RenewDocumentCommand{\L}{o o}{
     \Lsym
@@ -48,20 +52,18 @@
 \newcommand{\Lp}{\L[p]}
 \newcommand{\Lq}{\L[q]}
 
+% lp spaces
 \RenewDocumentCommand{\l}{o o}{
     \ell
     \IfNoValueTF{#1}{}{^{#1}
     \IfNoValueTF{#2}{}{_{#2}}}
 }
-
 \newcommand{\llinfty}{\l[\infty]}
-
-\DeclareMathOperator*{\spn}{span}
-\DeclareMathOperator*{\ran}{ran}
 
 %%%%%%%%%%%%% Common Functionals, Measures, Operators
 \DeclareMathOperator{\E}{\mathbb{E}}
-
+\DeclareMathOperator*{\spn}{span}
+\DeclareMathOperator*{\ran}{ran}
 \DeclareMathOperator{\Id}{Id}
 
 \NewDocumentCommand{\T}{o}{
@@ -71,7 +73,6 @@
 \NewDocumentCommand{\inv}{o}{
     \IfNoValueTF{#1}{\cdot^{-1}}{{#1}^{-1}}
 }
-
 \newcommand{\At}{\T[A]}
 \newcommand{\Ainv}{\inv[A]}
 

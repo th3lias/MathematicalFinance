@@ -9,33 +9,66 @@
 \usepackage{eucal}
 \usepackage{dsfont}
 \usepackage{enumitem}
+\usepackage{forest}
+\usepackage{caption}
+\usepackage{cleveref}
 
 
-\pgfplotsset{compat=1.18}
 \tcbuselibrary{theorems}
+\pgfplotsset{compat=1.18}
 
-\newtcolorbox[auto counter, number within=section]{definition}[1][]{%
-  colback=blue!5,
-  colframe=blue!40!black,
-  fonttitle=\bfseries,
-  title={Definition~\thetcbcounter\ifstrempty{#1}{}{: #1}},
-}
+%%%%%%%%%%%%%% COUNTERS %%%%%%%%%%%%%%
+\newcounter{theorem}
+\numberwithin{theorem}{section} % Automatically resets at each section
+\newcounter{lemma}
+\numberwithin{lemma}{section}
+\newcounter{definition} 
+\numberwithin{definition}{section}
 
-\newtcolorbox[auto counter, number within=section]{lemma}[1][]{%
-  colback=green!5,
-  colframe=green!40!black,
-  fonttitle=\bfseries,
-  title={Lemma~\thetcbcounter\ifstrempty{#1}{}{: #1}},
-}
 
-\newtcolorbox[auto counter, number within=section]{theorem}[1][]{%
+%%%%%%%%%%%%%% THEOREMS %%%%%%%%%%%%%%
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+\renewcommand{\thelemma}{\thesection.\arabic{lemma}}
+\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+
+
+% Register with cleveref
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+
+
+% Custom Environments - CORRECTED
+\newtcolorbox{theorem}[1][]{
   colback=red!5,
   colframe=red!40!black,
   fonttitle=\bfseries,
-  title={Theorem~\thetcbcounter\ifstrempty{#1}{}{: #1}},
+  before title={\stepcounter{theorem}},
+  title={Theorem~\thetheorem\ifstrempty{#1}{}{: #1}},
+  before upper={\refstepcounter{theorem}\addtocounter{theorem}{-1}}
 }
 
-\newtheorem{corollary}[subsection]{Corollary}
-\newtheorem{exercise}[subsection]{Exercise}
+\newtcolorbox{lemma}[1][]{%
+  colback=green!5,
+  colframe=green!40!black,
+  fonttitle=\bfseries,
+  before title={\stepcounter{lemma}},
+  title={Lemma~\thelemma\ifstrempty{#1}{}{: #1}},
+  before upper={\refstepcounter{lemma}\addtocounter{lemma}{-1}}
+}
 
+\newtcolorbox{definition}[1][]{%
+  colback=blue!5,
+  colframe=blue!40!black,
+  fonttitle=\bfseries,
+  before title={\stepcounter{definition}},
+  title={Definition~\thedefinition\ifstrempty{#1}{}{: #1}},
+  before upper={\refstepcounter{definition}\addtocounter{definition}{-1}}
+}
+
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
 \newtheorem*{remark}{Remark}

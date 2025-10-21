@@ -365,7 +365,7 @@ where \(\phi\) is self-financing. Now, an arbitrage strategy exists if and only 
 
 In words, the next theorem tells us that a financial market is globally free of arbitrage if and only if it is locally free of arbitrage.
 
-\begin{theorem}{}{}{}
+\begin{theorem}\label{th:ARB_STRAT_EQUIV}
     The following are equivalent.
     \begin{itemize}
         \item There exists an arbitrage strategy.
@@ -399,13 +399,55 @@ In words, the next theorem tells us that a financial market is globally free of 
     Moreover, using the assertion we get \(\P(\eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) \geq 0) = 1 = \P(V_T^\phi/B_T \geq 0)\) and \(\P(\eta \cdot (\tilde{S}_t - \tilde{S}_{t-1}) > 0) = \P(V_T^\phi/B_T > 0) > 0\).
 \end{proof}
 
-\begin{exercise}
-    We assume a financial markets with \(T=2\) periods and a RA with \(B_0 = B_1 = B_2 = 1\).
-\end{exercise}
-
-\color{red}
-Graphics for examples: TBD.
-\color{black}
+\begin{example}
+    We assume a financial market with \(T=2\) periods and a RA with \(B_0 = B_1 = B_2 = 1\). We assume the following price behaviour.
+    \begin{figure}[h!]
+        \begin{center}
+            \begin{forest}
+                for tree={
+                    grow=east,
+                    draw,
+                    edge={-latex},
+                    anchor=west,
+                    s sep=20pt,
+                    l sep=30pt,
+                    align=center,
+                    font=\small,
+                }
+                [{$S_0 = 4$}
+                    [{$S_1(u_1)=6$}
+                        [{$S_2(u_1,u_2)=8$}]
+                        [{$S_2(u_1,d_2)=5$}]
+                    ]
+                    [{$S_1(d_1)=3$}
+                        [{$S_2(d_1,u_2)=4$}]
+                        [{$S_2(d_1,d_2)=2$}]
+                    ]
+                ]
+            \end{forest}
+        \end{center}
+        \caption{Price behaviour in our \(2\)-period market.}
+        \label{fig:example_2_period_market_dt}
+    \end{figure}\\
+    We let \(\Omega = \set{u_1, d_1} \times \set{u_2, d_2}\). We now want to check whether our whole financial market is free of arbitrage by using the previous theorem. We start with \(t=1\) and obtain \[
+        \eta\left( \tS_n(y_1) - S_0 \right) = \begin{cases}
+            \eta(6-4)=2\eta, &y_1=u_1\\ \eta(3-4)=-\eta, &y_1=d_1.
+        \end{cases}
+    \]
+    As the cases have different signs, we cannot choose any common \(\eta \neq 0\) such that \(\eta(\tS_1(y_1)-S_0) \geq 0\) for all \(y_1\) and hence (NA) holds in period \(t=1\). For \(t=2\), need to check two cases. Indeed, \[
+        \eta(u_1) \left(\tS_2(u_1, y_2)-\tS_1(u_1)\right) = \begin{cases}
+            \eta(u_1) (8-6) = 2 \eta(u_1), &y_2=u_2\\
+            \eta(u_1)(5-6)=-\eta(u_1), &y_2=d_2.
+        \end{cases}
+    \]
+    By the same logic as before, with differing signs, we have (NA). Moreover,
+    \[
+        \eta(d_1)\left(\tS_1(d_1,y_2)-\tS_1(d_1)\right) = \begin{cases}
+            \eta(d_1)(4-3)=\eta(d_1),&y_2=u_2\\ \eta(d_1)(2-3)=-\eta(d_1),&y_2=d_2
+        \end{cases}
+    \]
+    yields differing signs again. Now we have checked all branches of the decision tree and get that (NA) holds for the whole financial market by \Cref{th:ARB_STRAT_EQUIV}.
+\end{example}
 
 \subsection{Options}
 
@@ -418,7 +460,7 @@ Options are characterised by the payoff. For \emph{european options}, the payoff
     If \(H \in \cF_T^S\), then \(H = h(S_0, \dots, S_T)\).
 \end{remark}
 
-\begin{exercise}[Examples of Contingent Claims]
+\begin{example}[Examples of Contingent Claims]
     \textbf{European call options} with strike price \(K\): \[
         H = (S_T-K)^+
     \]
@@ -441,7 +483,7 @@ Options are characterised by the payoff. For \emph{european options}, the payoff
         H = \left( S_T-\frac{1}{T}\sum_{t=1}^T S_t \right)^+
     \]
     is only exercised when the stock price is greater than the arithmetic mean. Also these are obviously path-dependent.
-\end{exercise}
+\end{example}
 
 \begin{definition}[Attainability and completeness]
     \begin{enumerate}[label=(\alph*)]
@@ -470,9 +512,60 @@ With this definition we get the following lemma.
     Now, \(\psi\) is an arbitrage strategy, where \(\psi \defn (\hat{\alpha}, \hat{\beta})\) where \(\hat{\alpha} \defn \alpha - \tilde{\alpha}\) and \(\hat{\beta}\) is determined by lemma 2.1 with \(V_0^\phi = 0\). This is a contradiction to (NA).
 \end{proof}
 
-\color{red}
-Exercise to be added.
-\color{black}
+\begin{example}
+    We use the tree-based model from the last example. Recall the structure:
+    \begin{figure}[h!]
+        \begin{center}
+            \begin{forest}
+                for tree={
+                    grow=east,
+                    draw,
+                    edge={-latex},
+                    anchor=west,
+                    s sep=20pt,
+                    l sep=30pt,
+                    align=center,
+                    font=\small,
+                }
+                [{$S_0 = 4$}
+                    [{$S_1(u_1)=6$}
+                        [{$S_2(u_1,u_2)=8$}]
+                        [{$S_2(u_1,d_2)=5$}]
+                    ]
+                    [{$S_1(d_1)=3$}
+                        [{$S_2(d_1,u_2)=4$}]
+                        [{$S_2(d_1,d_2)=2$}]
+                    ]
+                ]
+            \end{forest}
+        \end{center}
+        \caption{Price behaviour in our \(2\)-period market.}
+    \end{figure}
+    Consider the digital call with \(H = \indic[S_2 \geq 5]\). This will only pay \(1\) if \(S_2 \geq 5\). We get 
+    \begin{align*}
+        H(u_1, u_2) &= H(u_1, d_2) = 1\\
+        H(d_1, u_2) &= H(d_1, d_2) = 0.
+    \end{align*}
+    How can we construct a hedging strategy here? We must find \(\phi\) with \(V_T^\phi = H\). For \(t=2\) and the upper node, we get \begin{align*}
+        H(u_1,u_2)&=1=8\alpha_1(u_1)+\beta_1(u_1)=V_2^\phi(u_1,u_2)\\
+        H(u_1,d_2)&=1=5\alpha_1(u_1)+\beta_1(u_1)=V_2^\phi(u_1,d_2).
+    \end{align*}
+    Solving yields \(alpha_1(u_1)=0\) and \(\beta_1(u_1)=1\). Hence \(V_1^\phi = 6\alpha_1(u_1)+\beta_1(u_1)=1\) by the self-financing property. For the lower node, observe
+    \begin{align*}
+        H(d_1, u_2) &= 0 = 4 \alpha_1(d_1)+\beta_1(d_1)=V_2^\phi(d_1,u_2)\\
+        H(d_1, d_2) &= 0 = 2 \alpha_1(d_1)+\beta_1(d_1)=V_2^\phi(d_1,d_2).
+    \end{align*}
+    Solving yields \(\alpha_1(d_1)=0\) and \(\beta_1(d_1)=0\) and hence \(V_1^\phi = 3 \alpha_1(d_1)+\beta_1(d_1) = 0\) by self-financing.
+
+    We can now look at \(t=1\). We have
+    \begin{align*}
+        V_1^\phi(u_1) &= 1 = 6\alpha_0+\beta_0\\
+        V_1^\phi(d_1) &= 0 = 3\alpha_0+\beta_0,
+    \end{align*}
+    which yields \(\alpha_0=1/3\) and \(\beta_0=-1\) and hence \[
+        \pi(H) = V_0^\phi = S_0\alpha_0 + \beta_0B_0 = 4 \alpha_0+\beta_0 = \frac{4}{3}-1=\frac{1}{3}.
+    \]
+\end{example}
 
 \begin{remark}
     All considerations in this section are without accounting for transaction costs.
@@ -520,8 +613,8 @@ What can we say about completeness?
     Some calculating yields \(\alpha_0=\frac{H(u)-H(d)}{(u-d)S_0}\) and \(\beta_0=\frac{uH(d)-dH(u)}{(u-d)(1+r)}\). Obviously, \(\pi(H)=V_0^\phi=\beta_0B_0+\alpha_0S_0\).
 \end{proof}
 
-\begin{exercise}
-    Let \(u=1.1\) and \(d=0.9\) and \(r=0.05\). Due to (theorem \ref{th:CRR_NA}), the market is free of arbitrage. Let \(S_0 = 100\) and \(H(u)=80\) and \(H(d)=60\). The price due to (theorem \ref{th:CRR_COMPLETE}) is \[
+\begin{example}
+    Let \(u=1.1\) and \(d=0.9\) and \(r=0.05\). Due to \Cref{th:CRR_NA}, the market is free of arbitrage. Let \(S_0 = 100\) and \(H(u)=80\) and \(H(d)=60\). The price due to \Cref{th:CRR_COMPLETE} is \[
         \pi(H) = \frac{1.1 \cdot 60 - 0.9 \cdot 80}{(1.1 - 0.9) 1.05} + \frac{80-60}{1.1-0.9} = 71.42.
     \]
     The corresponding hedging strategy is \[
@@ -530,7 +623,7 @@ What can we say about completeness?
     and \[
         \beta_0 = -28.57.
     \]
-\end{exercise}
+\end{example}
 
 \begin{remark}[Preparatory remark on Equivalent Martingale Measures (EMMs)]
     We can rearrange \(\pi(H)\) from before as \[
