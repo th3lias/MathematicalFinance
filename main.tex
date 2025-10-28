@@ -651,9 +651,9 @@ What can we say about completeness?
 \end{remark}
 
 \subsubsection{Digression: Conditional Expectation and Martingales}
-\((\Omega, \cF, \P)\) is a probability space.
+We shortly recap some things on conditional expectation and martingales now.
 \begin{definition}[Conditional Expectation]
-    Let \(X \in L^1(\Omega, \cF, \P)\) and \(\cG \subset \cF\). \(Z\) is the conditional expectation of \(X\) on conditioned on \(\cG\) if and only if \begin{itemize}
+    Let \(X \in L^1(\Omega, \cF, \P)\) and \(\cG \subset \cF\) be a sub-\(\sigma\)-algebra. \(Z\) is the conditional expectation of \(X\) conditioned on \(\cG\) if and only if \begin{itemize}
         \item \(Z\) is \((\cG, \cB)\)-measurable,
         \item \(\intt[A][][X][\P] = \intt[A][][Z][\P]\) for all \(A \in \cG\).
     \end{itemize}
@@ -674,12 +674,12 @@ Let \(\Omega\) be finite and \(\P(\set{\omega}) > 0\) for any \(\omega \in \Omeg
     \]
 \end{theorem}
 \begin{proof}
-    Let \(Z\) be defined as above. Then \(Z\) is constant on the respective sets \(A_i\) and hence \(Z \in (\cG, \cB)\). For all \(j \in \set{1, \dots, n}\), we have
-    \begin{align*}
-        \intt[A_j][][\sum_{i=1}^n \E (X \mid A_i) \indic_{A_i}][\P]
+    Let \(Z\) be defined as above. Then \(Z\) is constant on the respective sets \(A_i\) and hence \(Z \in (\cG, \cB)\). For all \(j \in \set{1, \dots, n}\), we have for the expectation
+    \[
+        \E(Z \mid A_j) = \intt[A_j][][Z][\P]
         = \intt[A_j][][\E(X \mid A_j)][\P]
-        = \intt[A_j][][\frac{\E(X \cdot \indic_{A_j})}{\P(A_j)}][\P] = \E(X \indic_{A_j}).
-    \end{align*}
+        = \intt[A_j][][\frac{\E(X \cdot \indic_{A_j})}{\P(A_j)}][\P] = \E(X \indic_{A_j}).\qedhere
+    \]
 \end{proof}
 
 \begin{lemma}[Some properties]
@@ -775,19 +775,19 @@ Let \((c_t)\) be \((\cF_t)\)-adapted and let \(c_{t-1}\) represent the stake in 
     c_{t-1} \Delta Z_t = c_{t-1} (Z_t-Z_{t-1})
 \]
 and hence the total profit \[
-    G_t = \sum_{n=1}^t c_{n-1} \Delta Z_t , \quad G_0=0.
+    G_t = \sum_{n=1}^t c_{n-1} \Delta Z_n , \quad G_0=0.
 \]
 \((G_t)\) is then called \textbf{martingale transformation} of \((Z_t)\).
 
 \begin{theorem}
     Let \((Z_t)\) and \((c_t)\) be \((\cF_t)\)-adapted stochastic processes such that\[
-        G_t = \sum_{i=1}^n c_{n-1} \Delta Z_t, \quad G_0=0, t \in \N
+        G_t = \sum_{n=1}^t c_{n-1} \Delta Z_n, \quad G_0=0, t \in \N
     \]
     is integrable. Let \((Z_t)\) be a martingale. Then \((G_t)\) is also a martingale.
 \end{theorem}
 \begin{proof}
     By assumption, \((G_t)\) is integrable. \((G_t)\) is adapted since \((Z_t)\) and \((c_t)\) are adapted. The martingale property is verified by \[
-        \E(G_t-G_{t-1} \mid \cF_{t-1}) = \E(c_{t-1}(Z_t-Z_{t-1}) \mid \cF_{t-1}) = c_{t-1} \E(Z_t-Z_{t-1}\mid \cF_{t-1}) = 0.
+        \E(G_t-G_{t-1} \mid \cF_{t-1}) = \E(c_{t-1}(Z_t-Z_{t-1}) \mid \cF_{t-1}) = c_{t-1} \E(Z_t-Z_{t-1}\mid \cF_{t-1}) = 0.\qedhere
     \]
 \end{proof}
 
@@ -810,10 +810,65 @@ The information flow is modelled by the filtration \[
     \cF_0 = \set{\emptyset, \Omega}, \quad \cF_t = \sigma(Y_1, \dots, Y_t) = \sigma(S_0, \dots, S_t) = \cF_t^S, \quad t=1, \dots, T.
 \]
 
-\color{red}TBD: Add graphics of tree model here.\color{black}
+\begin{figure}[h!]
+    \begin{center}
+        \begin{tikzpicture}[
+            ->, >=stealth, % Set arrow style
+            node distance=2.5cm, % Distance between nodes
+            every node/.style={font=\small}, % Font size for text in nodes
+            state/.style={rectangle, draw, minimum size=6mm} % Style for boxed nodes
+        ]
+
+        % --- Define Variables for Shifts ---
+        % Horizontal shift (time step)
+        \def\xdist{1.5cm}
+        % Vertical shift (up/down movement)
+        \def\ydist{1cm}
+
+        % Define Nodes
+        \node[state] (S0) {$S_0$};
+
+        \node[state, right of=S0, xshift=\xdist, yshift=\ydist] (S1u) {$S_1=uS_0$};
+        \node[state, right of=S0, xshift=\xdist, yshift=-\ydist] (S1d) {$S_1=dS_0$};
+
+        \node[state, right of=S1u, xshift=\xdist, yshift=\ydist] (S2uu) {$S_2=u^2S_0$};
+        \node[state, right of=S1u, xshift=\xdist, yshift=-\ydist] (S2ud) {$S_2=ud=S_0$};
+
+        \node[state, right of=S1d, xshift=\xdist, yshift=-\ydist] (S2dd) {$S_2=d^2S_0$};
+
+        \node[state, right of=S2uu, xshift=\xdist, yshift=\ydist] (S3uuu) {\(S_3=u^3S_0\)};
+        \node[state, right of=S2uu, xshift=\xdist, yshift=-\ydist] (S3uud) {\(S_3=du^2S_0\)};
+        \node[state, right of=S2dd, xshift=\xdist, yshift=\ydist] (S3ddu) {\(S_3=d^2uS_0\)};
+        \node[state, right of=S2dd, xshift=\xdist, yshift=-\ydist] (S3ddd) {\(S_3=d^3S_0\)};
+
+        % Draw Arrows/Edges
+        % S0 to S1
+        \draw (S0) -- (S1u);
+        \draw (S0) -- (S1d);
+
+        % S1u to S2
+        \draw (S1u) -- (S2uu);
+        \draw (S1u) -- (S2ud);
+
+        % S1d to S2
+        \draw (S1d) -- (S2ud);
+        \draw (S1d) -- (S2dd);
+
+        % S2uu to S3
+        \draw (S2uu) -- (S3uuu);
+        \draw (S2uu) -- (S3uud);
+        \draw (S2ud) -- (S3uud);
+        \draw (S2ud) -- (S3ddu);
+        \draw (S2dd) -- (S3ddu);
+        \draw (S2dd) -- (S3ddd);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Price behaviour in our \(3\)-period market.}
+    \label{fig:example_3_period_market_crr}
+\end{figure}
 
 \begin{remark}
-    Recombining trees are the only trees that are feasible in practice due to complexity. They are characterised by \(ud=du\).
+    Recombining trees, as in \Cref{fig:example_3_period_market_crr} are the only trees that are feasible in practice due to exploding complexity otherwise. They are characterised by \(ud=du\).
 \end{remark}
 
 \textbf{Questions}. How about absence of arbitrage? The same conditions as in the \(1\)-period CRR model must hold!
