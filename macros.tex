@@ -12,6 +12,9 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cH}{\mathcal{H}}
 \newcommand{\cA}{\mathcal{A}}
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -81,13 +84,12 @@
     \IfNoValueTF{#1}{}{_{\set{#1}}}
 }
 
-\renewcommand{\d}{\mathrm{d}}
 \NewDocumentCommand{\intt}{o o o o}{
     \int
     \IfNoValueTF{#1}{}{_{#1}}
     \IfNoValueTF{#2}{}{^{#2}}
-    \IfNoValueTF{#3}{}{#3}\, 
-    \IfNoValueTF{#4}{}{\d #4}
+    \IfNoValueTF{#3}{}{#3}\,
+    \IfNoValueTF{#4}{}{\mathrm{d} #4}
 }
 
 \NewDocumentCommand{\abs}{o}{
