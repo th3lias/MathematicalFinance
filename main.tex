@@ -650,8 +650,8 @@ What can we say about completeness?
     Hence, discounted stock prices are martingales with respect to the risk-neutral measure. One can even show that the measure \(\Q\) is the only (i.e.\ unique) measure that satisfies the martingale property \(\E_\Q \tilde{S}_1 = \tilde{S}_0\).
 \end{remark}
 
-\subsection{Digression: Conditional Expectation and Martingales}
-\(\Omega, \cF, \P\) is a probability space.
+\subsubsection{Digression: Conditional Expectation and Martingales}
+\((\Omega, \cF, \P)\) is a probability space.
 \begin{definition}[Conditional Expectation]
     Let \(X \in L^1(\Omega, \cF, \P)\) and \(\cG \subset \cF\). \(Z\) is the conditional expectation of \(X\) on conditioned on \(\cG\) if and only if \begin{itemize}
         \item \(Z\) is \((\cG, \cB)\)-measurable,
@@ -789,6 +789,47 @@ and hence the total profit \[
     By assumption, \((G_t)\) is integrable. \((G_t)\) is adapted since \((Z_t)\) and \((c_t)\) are adapted. The martingale property is verified by \[
         \E(G_t-G_{t-1} \mid \cF_{t-1}) = \E(c_{t-1}(Z_t-Z_{t-1}) \mid \cF_{t-1}) = c_{t-1} \E(Z_t-Z_{t-1}\mid \cF_{t-1}) = 0.
     \]
+\end{proof}
+
+\subsection{Multi-period CRR model}
+
+We are looking at a \(T\)-period CRR model with \(T \in \N\) and trading times \(t=0, \dots, T-1\). Let \(r \geq 0\) and let the riskless asset assume dynamics \[
+    B_{t+1} = (1+r) B_t = (1+r)^{t+1},\quad B_0=1, t = 1, \dots, T-1.
+\]
+The construction of the price process of the risky asset on the product space \((\Omega, \cF)\) is such that \(\Omega = \set{d,u}^T\) and \(\cF = 2^\Omega\) with any \(\omega\) as \[
+    \omega = (y_1, \dots, y_T) \in \Omega \text{ with } y_t \in \set{d, u}, t = 1, \dots, T
+\]
+Again, \(\P\) is a probability measure on \((\Omega, \cF)\) such that \(\P(\set{\omega}) > 0\) for all \(\omega \in \Omega\).
+For the moment, no further specification of \(\P\) is needed. We now define \(Y_t\) on \((\Omega, \cF, \P)\) in the form of \[
+    Y_t(\omega) = Y_t(y_1, \dots, y_T) = y_t, \quad t=1, \dots, T.
+\]
+The price process \(S=(S_t)\) is the \(T\)-period CRR model \[
+    S_t = S_0 \prod_{n=1}^t Y_n, \quad t=1, \dots, T.
+\]
+The information flow is modelled by the filtration \[
+    \cF_0 = \set{\emptyset, \Omega}, \quad \cF_t = \sigma(Y_1, \dots, Y_t) = \sigma(S_0, \dots, S_t) = \cF_t^S, \quad t=1, \dots, T.
+\]
+
+\color{red}TBD: Add graphics of tree model here.\color{black}
+
+\begin{remark}
+    Recombining trees are the only trees that are feasible in practice due to complexity. They are characterised by \(ud=du\).
+\end{remark}
+
+\textbf{Questions}. How about absence of arbitrage? The same conditions as in the \(1\)-period CRR model must hold!
+
+\begin{theorem}
+    In the \(T\)-period CRR model, the market is free of arbitrage if and only if \(d < 1+r < u\).
+\end{theorem}
+\begin{proof}
+    We use once more \Cref{th:ARB_STRAT_EQUIV}.
+    Let \(\eta\) be \(\cF_{t-1}\)-measurable and observe \[
+        \eta\left(\frac{S_t}{B_t}-\frac{S_{t-1}}{B_{t-1}}\right) = \eta\left( \frac{Y_tS_{t-1}}{(1+r)B_{t-1}}-\frac{S_{t-1}}{B_{t-1}} \right).
+    \]
+    Hence \[
+        \eta(S_t-\tilde{S}_{t-1}) \geq 0 \implies \eta\left(\frac{Y_t}{1+r}-1\right) \geq 0.
+    \]
+    \(\eta\) is \(\cF_{t-1}\)-measurable and hence independent of \(Y_t\). Moreover, \(u/(1+r)-1\) and \(d/(1+r)-1\) have different signs if and only if \(d < 1+r < u\).
 \end{proof}
 
 \section{Absence of arbitrage and equivalent martingale measures}
