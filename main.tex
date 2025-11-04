@@ -887,7 +887,172 @@ The information flow is modelled by the filtration \[
     \(\eta\) is \(\cF_{t-1}\)-measurable and hence independent of \(Y_t\). Moreover, \(u/(1+r)-1\) and \(d/(1+r)-1\) have different signs if and only if \(d < 1+r < u\).
 \end{proof}
 
+\color{red}
+Missed the first few minutes here.
+\color{black}
+
+\(Y_1, \dots, Y_T\) are i.i.d. random variables with \(\Q(Y_t = u) = q = 1 - \Q(Y_t=d)\) by construction. Again, \(\Q\) is the only measure w.r.t. which \((\tilde{S}_t)\) is a martingale (see Theorem 4.1).
+
+What about the price of a contingent claim? \(H\) in the multi-period CRR model.
+
+\begin{theorem}[should be 3.4]
+    Suppose (NA). Then the \(T\)-period CRR is complete. In particular, for every contingent claim \(H\), there exists a unique self-financing trading strategy \(\phi=(\alpha, \beta)\) such that \(V_T^\phi=H\). The price of \(H\) is then given by \[
+        \pi(H) = \beta_0B_0+\alpha_0S_0 = \sum_{\omega = (y_1, \dots, y_T) \in \Omega} q_{y_1} \cdot \cdots \cdot q_{y_T} \frac{H(\omega)}{B_T} = \E_\Q \frac{H}{B_T}.
+    \]
+\end{theorem}
+\begin{proof}
+    Let \(H\) be an arbitrary contingent claim. \(\pi(H)\) and \(\phi\) are obtained recursively from the binomial tree. As \(\phi = (\alpha, \beta)\) is self-financing, we have for \(t=1,\dots,T\) that \begin{equation}\label{eq:tmpForProof341}
+        V_t^\phi = \beta_{t-1}B_t + \alpha_{t-1} S_t
+    \end{equation}
+    and \begin{equation}\label{eq:tmpForProof342}
+        V_{t-1}^\phi = \beta_{t-1} B_{t-1} + \alpha_{t-1} S_{t-1}.
+    \end{equation}
+    We start backwards in \(t=T\). Fix \(V_T=H\) and \((y_1, \dots, Y_{T-1})\). As \(Y_T\) can attain two values (\(u, d\)), \eqref{eq:tmpForProof341} becomes a linear system of equations with two equations and two unknowns \(B_{T-1}, \alpha_{T-1}\). Now, \(\beta_{T-1}(\omega)\) and \(\alpha_{T-1}(\omega)\) depend only on \(y_1, \dots, y_{T-1}\) as they are \(\cF_{T-1}\)-measurable (see definition 2.1 of trading strategies). Let \(h_{T-1}=(y_1, \dots, y_{T-1})\). Then \[
+        V_T^\phi(h_{T-1}, u) = H(h_{T-1}, u) = \beta_{T-1}(h_{T-1})B_T + \alpha_{T-1}S_{T-1}(h_{T-1})u
+    \]
+    and \[
+        V_T^\phi(h_{T-1}, d) = H(h_{T-1}, d) = \beta_{T-1}(h_{T-1})B_T + \alpha_{T-1}(h_{T-1})S_{T-1}(h_{T-1})d.
+    \]
+    This system is uniquely solvable for \((\alpha_{T-1}, \beta_{T-1})\) in dependence of \(h_{T-1}=(y_1,\dots,y_{T-1})\). We get \[
+        \alpha_{T-1}= \frac{H(h_{T-1},u)-H(h_{T-1},d)}{(u-d)S_{T-1}(h_{T-1})}
+    \]
+    and \[
+        \beta_{T-1}(h_{T-1})=\frac{uH(h_{T-1},u)-dH(h_{T-1},d)}{(u-d)B_T}.
+    \]
+    Using \Cref{th:CRR_COMPLETE} and substituting \(\alpha_{T-1}, \beta_{T-1}\) yields
+    \begin{align*}
+        V_{T-1}^\phi(h_{T-1})
+        &=\beta_{T-1}(h_{T-1})B_{T-1}+\alpha_{T-1}(h_{T-1})S_{T-1}(h_{T-1})\\
+        &=\frac{1}{1+r}\left( q H(h_{T-1},u) + (1-q)H(h_{T-1},d) \right)
+    \end{align*}
+    where \(q=\frac{1+r-d}{u-d}\). For \(T=1\), use \Cref{th:CRR_COMPLETE} and for \(T>1\) repeat the calculation recursively. The above can be seen by plugging in \(\alpha_{T-1}(h_{T-1})\) and \(\beta_{T-1}(h_{T-1})\) and obtaining \[
+        V_T^\phi(h_{T-1}) = \frac{uH(h_{T-1}, u)-dH(h_{T-1},d)}{(u-d)B_T}B_{T-1}+\frac{H(h_{T-1},u)-H(h_{T-1},d)}{(u-d)S_{T-1}(h_{T-1})}S_{T-1}(h_{T-1})
+    \]
+    and noticing \(B_T/B_{T-1}=1/(1+r)\).
+\end{proof}
+\begin{remark}
+    \(V_t^\phi\) is the price of \(H\) at time \(t\) and \[
+        V_t^\phi = B_t \E_\Q\left( \frac{H}{B_T} \mid \cF_t \right) \leftarrow \text{cf. chapter 6}
+    \]
+\end{remark}
+\begin{remark}[Hedging in multi-period CRR model]
+    Suppose (NA) holds and \(H=h(S_T)\). If \(\phi=(\alpha,\beta)\) is a hedging strategy for \(H\), then \[
+        V_T^\phi(S_{T-1}, u) = h(S_{T-1},u)=\beta_{T-1}(S_{T-1})B_T+\alpha_{T-1}(S_{T-1})S_{T-1}u
+    \]
+    and in the down state \[
+        V_T^\phi(S_{T-1}, d) = h(S_{T-1},d)=\beta_{T-1}(S_{T-1})B_T+\alpha_{T-1}(S_{T-1})S_{T-1}d.
+    \]
+    We see that \(\alpha_{T-1}, \beta_{T-1}\) do depend on \(h_{T-1}\) only via \(S_{T-1}\)! Not on the whole history \(h_{T-1}=(y_1,\dots,y_{T-1})\). The same applies to \(V_{T-1}\) as \[
+        V_{T-1}^\phi(S_{T-1}) = \beta_{T-1}(S_{T-1}) B_{T-1} + \alpha_{T-1}(S_{T-1}) S_{T-1}
+    \]
+    and \[
+        \alpha_{t-1}(S_{t-1}) = V_t^\phi(S_{t-1},u) + V_t^\phi(S_{t-1},d)
+    \]
+    and \[
+        \beta_{t-1}(S_{t-1}) = \frac{u V_t^\phi(S_{t-1},d)-dV_t^\phi(S_{t-1},u)}{(u-d)B_t}.
+    \]
+\end{remark}
+\begin{corollary}\label{cor:priceViaBinomialSum}
+    Let \(H=h(S_T)\). Then \[
+        \pi(H)=\E_\Q\frac{h(S_T)}{B_T}=\frac{1}{B_T}\sum_{t=0}^T {T \choose t} q^t(1-q)^{T-t}h(S_0 u^t d^{T-t})
+    \]
+\end{corollary}
+\begin{proof}
+    \(S_T=S_0\prod_{t=1}^TY_t\)
+    with \(\Q(Y_t=u)=q=1-\Q(Y_t=d)\). The number of "ups" up to time \(T\) is binomially distributed with parameters \(T,q\). The payoff \(H\) is therefore the same for \({T \choose t}\) realisations. The sum from Theorem 3.4 is given by the above binomial expression.
+\end{proof}
+\begin{example}
+    CRR model with \(T=10\). Let \(r=0.02\), \(u=1.1\), \(d=0.9\), \(S_0=100\), call option with \(K=220\). Moreover \(H = (S_T-K)^+\). We are interested in the price of this option at \(t=0\) and \(\alpha_0, \beta_0\). Note that \(K=220\) is very high. Only in the case \(\omega=(u, \dots, u)\) we obtain a positive payoff \(H(u, \dots, u) = (S_0 u^{10}-K)^+ = 39.37\). Corollary 3.11 tells us \(\pi(H)=\E_\Q\frac{H}{B_T}=\left(\frac{q}{1+r}\right)^{10}=0.195\) with \(q=\frac{1+r-d}{u-d}=0.6\). Our hedging strategy is determined by
+    \[
+        K=220 \implies 
+        \begin{cases}
+            V_1^\phi(d)=0\\
+            V_1^\phi(u)=\left(\frac{q}{1+r}\right)^{9},\, H(u, \dots, u)=0.332
+        \end{cases}
+    \]
+    and hence \(\alpha_0 S_0 u + \beta_0 B_1 = 0.332u\) and \(\alpha_0 S_0 d + \beta_0 B_1 = 0\). Solving for \(\alpha_0, \beta_0\) we get \(\alpha_0=0.0166, \beta_0=-1.464\).
+\end{example}
+
+\subsection{The limit \texorpdfstring{\(n \to \infty\)}{}: Black-Scholes Model.}
+
+\(H = h(S_T) = (S_T-K)^+\) and by \Cref{cor:priceViaBinomialSum}
+\begin{align*}
+    C_0 &= \frac{1}{B_T} \sum_{t=0}^T {T \choose t} q^t(1-q)^{T-t}(S_0 u^t d^{T-t}-K)^+\\
+    &= \frac{1}{B_T}\sum_{k=a}^T {T \choose k}q^k(1-q)^{T-k}(S_0u^kd^{T-k}-K)\\
+    &= S_0 \sum_{k=a}^T {T \choose k} \left(\frac{q^k}{1+r}\right)^k \left(\frac{(1-q)d}{1+r}\right)^{T-k}-\frac{K}{(1+r)^T}\sum_{k=a}^T {T \choose k} q^k (1-q)^{T-k}\\
+    &= S_0 \sum_{k=a}^T {T \choose k} \left(\frac{qu}{1+r}\right)^k\left(1-\frac{qu}{1+r}\right)^{T-k}-\frac{K}{(1+r)^T}\sum_{k=a}{T \choose k} q^k (1-q)^{T-k}
+\end{align*}
+by choosing \(a = \min\set{ k \in \N : S_0u^t d^{T-t}-K > 0 }\) and some factoring and collecting terms and noticing \(q=\frac{1+r-d}{u-d} \implies \frac{(1-q)d}{1+r}=1-\frac{qu}{1+r}\). Now divide \([0, T]\) into parts of length \(\Delta_n = T/n\) and consider a sequence of CRR models with parameters \(d_n, u_n, r_n\). Interest in \(n\) periods is \[
+    \left(1+\frac{r}{n}\right)^n \stackrel{n \to \infty}{\longrightarrow} e^r.
+\]
+Choosing \(r_n\) such that \(1+r_n = e^{r \Delta_n}\) implies \(B_t=(1+r)^t=e^{rt\Delta_n}\). Choose \(r_n=e^{r \Delta_n}-1\) and \(u_n=e^{\sigma \sqrt{\Delta_n}}\) and \(d_n=u_n^{-1}=e^{-r\sqrt{\Delta_n}}\). For large \(n\) we obtain \(e^{-\sigma{\sqrt{\Delta_n}}} < 1+r_n < e^{\sigma\sqrt{\Delta_n}}\) and hence (NA). This can be seen from \[
+    -\sigma\sqrt{\Delta_n} < \log(1+r_n) = r\Delta_n < \sigma\sqrt{\Delta_n}.
+\]
+\begin{theorem}[Black-Scholes formula is CRR limit]\label{th:BLACKSCHOLES_CRR}
+    The time-\(0\) price of a European call option is given by \[
+        C_0^{BS} = \lim_{h \to \infty} C_0^{(h)} = S_0 \Phi(d) - Ke^{-rT}\Phi(d-\sigma\sqrt{T})
+    \]
+    with \(d=\frac{\log\frac{S_0}{K}+(r+\sigma^2/2)T}{\sigma\sqrt{T}}\) where \(\Phi\) is the CDF of the standard normal distribution.
+\end{theorem}
+\begin{remark}
+    \(r\) is the interest in the continuous model. \(\sigma\) is the volatility of the stock, i.e.\ a measure of the size of the fluctuations of the stock price. \(S_0\) is the stock price at time \(0\). \(K\) is the strike price at \(t=T\).
+\end{remark}
+\begin{proof}
+    Consider again the \(n\)-period CRR model and set \[
+        a_n=\min \set{k \in \N_0: S_0u_n^kd_n^{n-k}-K>0}
+    \] and \(q_n\frac{1+r_n-d_n}{u_n-d_n}\). Then \[
+        C_0^{(n)} = S_0 \sum_{k=a_n}^n {n \choose k} \left(\frac{q_nu_n}{1+r_n}\right)^{k} \left(1-\frac{q_nu_n}{1+r_n}\right)^{n-k}-\frac{K}{(1+r_n)^n}\sum_{k=a_n}^n {n \choose k} q_n^k (1-q_n)^{n-k}.
+    \]
+    with \(\hat q_n = \frac{q_n u_n}{1+r_n}\) we have \(\hat q_n \in [0,1]\) can be interpreted as a probability. Moreover, we denote by \[
+        \bar B_{n,p}(x) = \sum_{k=x}^n {n \choose k} p^k (1-p)^{n-k}, \quad x \in \set{0, 1, \dots, n}
+    \]
+    the survival function of a binomial distribution \(B(n,p)\). Hence \[
+        C_0^{(n)} = S_0 \bar B_{n, \hat q_n}(a_n) - \frac{K}{(1+r_n)^n} \bar B_{n, q_n}(a_n).
+    \]
+    By construction, \((1+r_n)^{-n}=e^{-r\frac{T}{n}n}=e^{-rT}\). We now need to show that \begin{align*}
+        \lim_{n \to \infty} \bar B_{n, \hat q_n} (a_n) &= \Phi(d)\\
+        \lim_{n \to \infty} \bar B_{n, q_n}(a_n) &= \Phi(d-\sigma\sqrt{T}).
+    \end{align*}
+    We only show the first equality. The latter follows analogously. Take a random variable \(Z_n \sim B(n, \hat q_n)\), i.e.\ \[
+        \bar B_{n,\hat q_n}(a_n) = \P(a_n \leq z_n \leq n).
+    \]
+    Now, we want to apply the CLT of Lindeberg-Feller. First, we standardise the random variables as \[
+        \tilde Z_n = \frac{Z_n - \E Z_n}{\sqrt{\var(Z_n)}} = \frac{Z_n - n \hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}.
+    \]
+    Now notice \[
+        a_n \leq Z_n \leq n \iff \alpha_n = \frac{a_n - n \hat q_n}{\sqrt{n \hat q_n (1- \hat q_n)}} \leq \tilde Z_n \leq \frac{n(1-\hat q_n)}{\sqrt{n \hat q_n (1-\hat q_n)}} = \beta_n.
+    \]
+    Moreover \[
+        \bar B_{n, \hat q_n} (a_n) = \P(a_n \leq Z_n \leq n) = \P(\alpha_n \leq \tilde Z_n \leq \beta_n).
+    \]
+    Determine \[
+        a_n = \min \set{k \in \N_0 : S_0 u_n^k d_n^{n-k} - K > 0}.
+    \]
+    We know \(S_0u_n^kd_n^{n-k}-K>0 \iff k > \frac{\log (K/S_0)-n\log(d_n)}{\log(u_n/d_n)}=a_n\). We have \[
+        \log\frac{u_n}{d_n}=\log \left(\frac{e^{\sigma{\sqrt{\Delta_n}}}}{e^{-\sigma\sqrt{\Delta_n}}}\right) = 2 \sigma\sqrt{\Delta_n}
+    \]
+    and \[
+        \log(d_n)=-\sigma\sqrt{\Delta_n}.
+    \]
+    Moreover, \(\lim_n q_n = \lim_n \hat q_n = 1/2\) and \(\lim_n n(1-2\hat q_n)\sqrt{\Delta_n}=-T\left(\frac{r}{\sigma}+\frac{\sigma}{2}\right)\).
+    We have \begin{align*}
+        \lim_n \alpha_n
+        &= \lim_n \frac{a_n - n \hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}\\
+        &= \lim_n \frac{\frac{\log (K/S_0)-n\log(d_n)}{\log(u_n/d_n)}-n \hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}\\
+        &= \lim_n \frac{\log(K/S_0) + n \sigma \sqrt{\Delta_n} - \sigma n \sqrt{\Delta_n} 2 \hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)\Delta_n} 2 \sigma}\\
+        &= \frac{\log (K/S_0) - \sigma T\left(\frac{r}{\sigma}+\frac{\sigma}{2}\right)}{\sigma \sqrt{T}} = \frac{\log(K/S_0)-T(r+\frac{\sigma^2}{2})}{\sigma \sqrt{T}}=-d.
+    \end{align*}
+    Analogously, compute \(\lim_n \beta_n = \infty\). Then, apply the CLT by Lindeberg-Feller and obtain \[
+        \lim_n \bar B_{n, \hat q_n}(a_n) = \Phi(\lim_n \beta_n)-\Phi(\lim_n \alpha_n) = 1 - \Phi(-d) = \Phi(d).
+    \]
+    One analogously obtains \[
+        \lim_n \bar B_{n, q_n}(a_n) = \Phi(d-\sigma\sqrt{T}).\qedhere
+    \]
+\end{proof}
+
+
 \section{Absence of arbitrage and equivalent martingale measures}
+
 \section{Completeness and equivalent martingale measures}
 \section{Risk--neutral pricing of contingent claims}
 \section{American options}
