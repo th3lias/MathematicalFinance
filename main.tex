@@ -309,7 +309,7 @@ Hence if the initial wealth \(V_0^\phi\) is known, every \(\alpha \in \cA\) can 
     \(\tilde{S}_t^k \defn \frac{S_t^k}{B_t}\) is the discounted stock price of risky asset \(k\) at \(t\).
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{le:22}
     Let \(\phi\) be self-financing. Then we have \[
         \frac{V_t^\phi}{B_t} = V_0^\phi + \sum_{n=1}^t \alpha_{n-1} \Delta \tilde{S}_n.
     \]
@@ -1049,9 +1049,179 @@ Choosing \(r_n\) such that \(1+r_n = e^{r \Delta_n}\) implies \(B_t=(1+r)^t=e^{r
         \lim_n \bar B_{n, q_n}(a_n) = \Phi(d-\sigma\sqrt{T}).\qedhere
     \]
 \end{proof}
-
+We state the CLT for completeness.
+\begin{theorem}[Lindeberg-Feller]\label{thm:lindebergFeller}
+    For \(n \in \N\) and \(X_{n_1}, \dots, X_{n r_n}\) independent with \(\E X_{n_k} = \mu_{n_k}\) and \(0 < \var(X_{n_k}) < \sigma_{n_k}^2 < \infty\). Let \(\sigma_n^2 = \sigma_{n_1}^2 + \cdots + \sigma_{nr_n}^2\). If the Lindeberg condition \[
+        \lim_{n \to \infty} \frac{1}{\sigma_n^2} \sum_{k=1}^{r_n} \E \left( X_{n_k}-\mu_{n_k} \right)^2 \indic[\abs[X_{n_k}-\mu_{n_k}] > \epsilon \sigma_n] = 0
+    \]
+    is satisfied, then for \(S_n = X_{n_1} + \cdots + X_{nr_n}\), \[
+        \lim_{n \to \infty} \Pr\left( \frac{S_n - \E S_n}{\sqrt{\var\left(S_n\right)}} \leq x \right) = \Phi(x), \quad \forall x \in \R.
+    \]
+    If \((\alpha_n) \subseteq \R\) and \(\beta_n \subseteq \R\) are sequences with \(\lim_n \alpha_n = \alpha\), \(\lim_n \beta_n = \beta\) with \(\alpha \leq \beta\) we have \[
+        \lim_{n \to \infty} \Pr \left( \alpha_n \leq \frac{S_n - \E S_n}{\sqrt{\var(S_n)}} \leq \beta_n \right) = \Phi(\beta) - \Phi(\alpha).
+    \]
+\end{theorem}
+One may verify the conditions on the statement for the proof of~\cref{th:BLACKSCHOLES_CRR}.
 
 \section{Absence of arbitrage and equivalent martingale measures}
+We use the abbreviation EMM for ''equivalent martingale measure''.
+We already saw such measures as the \(q\)'s appearing in the previous chapters.
+We will now connect (NA) and the set of EMMs.
+For this, we continue with finite state financial markets equipped with a filtered probability space \((\Omega, \cF, \P)\) and assume \(\P(\set{\omega}) > 0\) for each \(\omega \in \Omega\). We again let \(\cF_0 = \set{\Omega, \emptyset}\) and \(\cF_T = \cF = 2^\Omega\).
+
+\begin{definition}[Martingale Measure]\label{def:martingaleMeasure}
+    A probability measure \(\Q\) on \((\Omega, \cF, (\cF_t)_t)\) is called \underline{martingale measure} or \underline{risk-neutral} if for all \(k=1, \dots, d\), the discounted price process \((\tS_t^k) = (S_t^k/B_t)\) are \((\cF_t)_t\)-martingales.
+\end{definition}
+The latter means \[
+    \tS_t^k = \E_\Q\left( \tS_{t+1}^k \mid \cF_t \right) \quad \Q\text{-a.s. for all }k=1,\dots,d.
+\]
+\begin{remark}[Notation]
+    We let \[
+        \cM \defn \set{\Q \text{ is a probability measure on } (\Omega, \cF) \text{ and } \Q \text{ is a martingale measure}}.
+    \]
+    We let \[
+        \cM^+ \defn \set{\Q \in \cM: \Q \text{ is equivalent to } \P}
+    \]
+    where equivalence of measures means that they have the same null sets.
+\end{remark}
+Consider the CRR-model under (NA). Recall the condition \(d < 1+r < u\), then we defined \[
+    \Q(\set{\omega})=\Q(\set{y_1, \dots, y_T}) = q_{y_1} \cdot \cdots \cdot q_{y_T},
+\]
+\(\omega=(y_1, \dots, y_T) \in \set{u,d}^T\) and \[
+        q_y = \begin{cases}
+        q &y=u\\ 1-q &y=d
+    \end{cases}
+\]
+with \(q=\frac{1+r-d}{u-d}\) and \(\cF_t = \sigma(Y_1, \dots, Y_t) = \cF_t^S\). We will now show that \(\Q\) is an EMM.
+
+\begin{theorem}[Equivalences under (NA)]\label{thm:equivEMMCrr}
+    Under (NA) in the CRR-model,
+    \begin{itemize}
+        \item \((\tS_t)\) is a \(\Q\)-martingale, i.e.\ \(\Q \in \cM\),
+        \item \(\Q\) is the only martingale measure , i.e.\ \(\abs[\cM]=1\),
+        \item \(\Q\) is equivalent to \(\P\), i.e.\ \(\abs[\cM^+]=1, \Q \in \cM^+\).
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    Ad (a). \begin{align*}
+        \E_\Q \left(\tS_{t+1} \mid \cF_t\right)
+        &= \E_\Q \left( \frac{Y_{t+1}S_t}{B_t} \mid \cF_t \right)\\
+        &= \frac{S_t}{B_{t+1}}\E_\Q\left( Y_{t+1} \mid \cF_t \right)\\
+        &= \frac{S_t}{B_t(1+r)}\E_\Q Y_{t+1}\\
+        &= \frac{S_t}{B_t}\frac{1}{1+r}\left( uq+d(1-q) \right)\\
+        &= \frac{S_t}{B_t} = \tS_t
+    \end{align*}
+    by definition of \(\tS_{t+1}\) and measurable factorisation since \(S_t\) is \(\cF_t\)-measurable and \(B_{t+1}\) is deterministic and \(Y_{t+1} \perp \cF_t\). In the last step, we used that \((uq+d(1-q))/(1+r)=1\) since \(q=(1+r-d)/(u-d)\).
+
+    Ad (b). Arguments after~\cref{th:CRR_COMPLETE} apply. \(\Q\) is the only one which achieves the goal, i.e.\ such that (a) holds, we obtain the unique solution for \(q\).
+
+    Ad (c). With (NA), \(q \in (0,1)\) implies that \(\Q(\set{\omega})>0\) for all \(\omega \in \Omega\) implies \(\Q\) is equivalent to \(\P\).
+\end{proof}
+
+From now on, consider the general finite financial market. The question arises, how (NA) and \(\abs[\cM]\) are related.
+
+\begin{theorem}\label{thm:wealthMartingale}
+    Let \(\Q \in \cM\) and \(\phi = (\alpha, \beta)\) be a self-financing trading strategy. Then the discounted stock wealth process \(\left(\frac{V_t^\phi}{B_t}\right)\)  is a \(\Q\)-martingale.
+\end{theorem}
+\begin{proof}
+    As \(\phi\) is self-financing, we have by~\cref{le:SELFF_TO_BETA}, \[
+        \frac{V_t^\phi}{B_t} = V_0^\phi + G_t^\alpha = V_0^\phi + \underbrace{\sum_{k=1}^d \underbrace{\sum_{n=1}^t \alpha_{n-1}^k \Delta \tS_n^k}_{\text{martingale transformation of } \Q \text{-martingales } \tS_t}}_{\text{sum of martingale transformations}}.
+    \]
+    Hence, \(\frac{V_t^\phi}{B_t}\) is again a \(\Q\)-martingale.
+\end{proof}
+
+\begin{theorem}\label{thm:EMMAdmissibleEquivalence}
+    Let \(\Q\) be a probability measure on \((\Omega, \cF)\). We have
+    \begin{itemize}
+        \item \(\Q \in \cM\) if and only if for all \(\alpha \in \cA: \E_\Q(G_T^\alpha)=0\),
+        \item if \(\cM^+ \neq \emptyset\), then (NA).
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    Ad (a). Let \(\Q \in \cM\). Then we have \begin{align*}
+        \E_\Q \left( \alpha_{t-1} \cdot \Delta \tS_t \mid \cF_{t-1} \right)
+        &= \alpha_{t-1} \E_\Q\left( \Delta \tS_t \mid \cF_{t-1} \right)\\
+        &= \alpha_{t-1} \E_\Q \left( \tS_t-\tS_{t-1} \mid \cF_{t-1} \right)\\
+        &= \alpha_{t-1} \E_\Q \left( \tS_t \mid \cF_{t-1} \right) - \alpha_{t-1} \E_\Q \left( \tS_{t-1} \mid \cF_{t-1} \right)\\
+        &= \alpha_{t-1} \tS_{t-1} - \alpha_{t-1} \tS_{t-1} = 0
+    \end{align*}
+    by the martingale property and the \(\cF_{t-1}\)-measurability of \(\tS_{t-1}\) for any \(t=1, \dots, T\).
+
+    Moreover \[
+        \E_\Q \left( \alpha_{t-1} \cdot \Delta \tS_t \mid \cF_{t-1} \right) = \E_\Q \left( \E_\Q \left( \alpha_{t-1} \cdot \Delta \tS_t \mid \cF_{t-1} \right) \right) = 0.
+    \]
+    This implies \[
+        \E_\Q G_T^\alpha = \E_\Q\left( \sum_{t=1}^T \alpha_{t-1} \cdot \Delta \tS_t \right) = 0.
+    \]
+
+    For the backwards direction, let \(n \in \set{1, \dots, T}\) and \(k \in \set{1, \dots, d}\) and \(B \in \cF_{n-1}\). Define the trading strategy \(\alpha = (\alpha_t)\) s.t.\ \[
+        \alpha_{n-1}^k = \indic_B, \quad \alpha_t^j = 0, \text{for } (j,t) \neq (k, n-1).
+    \]
+    Now, \(\alpha \in \cA\) as \(\alpha_t\) is \(\cF_t\)-measurable. Now, \[
+        G_T^\alpha = \indic_B \Delta \tS_n^k
+    \]
+    and by assumption, \[
+        0 = \E_\Q G_T^\alpha = \E_\Q \left( \indic_B \Delta \tS_n^k \right).
+    \]
+    By construction, \(\indic_B\) is \(\cF_{n-1}\)-measurable and \[
+        0 = \E_\Q \left( \indic_B \Delta \tS_n^k \right) = \E_\Q \left( \E_\Q \left( \indic_B \Delta \tS_t^k \mid \cF_{n-1} \right) \right) = \E_\Q \left( \indic_B \E_\Q \left( \Delta \tS_n^k \mid \cF_{n-1} \right) \right).
+    \]
+    Now choose \(B = \set{\E_\Q(\Delta \tS_n^k \mid \cF_{n-1}) \stackrel{>}{<} 0}\) to get \[
+        0 = \E_\Q \left( \indic_B \Delta \tS_n^k \right) = \Q(B).
+    \]
+    This implies \(\E_\Q (\Delta \tS_n^k \mid \cF_{t-1})=0\) \(\Q\)-a.s. for all \(n,k\) and hence \(\Q \in \cM\).
+
+    Ad (b). First, we characterise (NA) as in chapter 2. There, we said that for a self-financing trading strategy \(\phi = (\alpha, \beta)\), (NA) \(\iff\) \(G_T^\alpha \geq 0\) implies \(G_T^\alpha=0\).
+
+    (A) means that there is a self-financing \(\phi=(\alpha, \beta)\) s.t.\ \[
+        V_0^\phi = 0,\quad \P\left( G_T^\alpha \geq 0 \right), \quad \P\left(G_T^\alpha > 0\right)> 0.
+    \]
+    We know from part (a) that \(\E_\Q(G_T^\alpha)=0\) for all \(\alpha \in \cA\). If \(G_T^\alpha \geq 0\) and \(\E_\Q(G_T^\alpha) = 0\) implies \(G_T^\alpha=0\) since every atomic event has positive \(\Q\)-probability.
+\end{proof}
+
+The first fundamental theorem of asset pricing yields a clear connection between EMMs and (NA). Indeed, (NA) \(\iff\) \(\cM^+ \neq \emptyset\). The proof is based on a separation theorem in \(\R^m\) and relies on methods from functional analysis. Essentially, we exploit the fact that \(\Omega = \set{\omega_1, \dots, \omega_m}\) is finite. We now interpret the random variable \(X\) on \(\Omega\) as a vector in \(\R^{\abs[\Omega]} = \R^m\) by writing \((X(\omega_1), \dots, X(\omega_m)) \in \R^m\) and we denote \(X(\omega_i)\) by \(X_i\). Consider the set \[
+    L = \set{X \in \R^m: X_i = G_T^\alpha(\omega_i), i=1,\dots,m,\, \alpha \in \cA}.
+\]
+The \(G_T^\alpha\) is linear in \(\alpha\). Hence, \(L\) is a linear subset of \(\R^m\) which is closed and convex.
+
+\begin{remark}[Interpretation of \(L\)]
+    Recall that \(H\) is attainable if \(V_T^\phi = H\). Then \(\pi(H) = V_0^\phi\) for \(\phi\) self-financing. By~\cref{le:22} we have \[
+        \frac{V_T^\phi}{B_T} = V_0^\phi + \sum_{n=1}^T \alpha_{n-1} \Delta \tS_n = V_0^\phi + G_T^\alpha.
+    \]
+    \(L\) includes all discounted contingent claims, that are attainable and have price \(0\). This can be seen since with \(V_0^\phi=0\) implies \(G_T^\alpha=V_T^\phi/B_T=H/B_T\)
+\end{remark}
+
+Define \[
+    \cC = \set{X \in \R^m : X \leq Y \text{ for some } Y \in L}.
+\]
+This is a convex and closed cone that includes all vectors that are dominated by discounted claims with price \(0\). We can equivalently express (NA) with the help of the sets \(L\) and \(\cC\). Indeed, \[
+    L \cap \R^m_+ = \set{0}, \text{ resp. } \cC \cap \R^m_+ = \set{0}.
+\]
+The above means that we start from initial investment \(0\) i.e.\ from \(L\) or \(\cC\). The resulting contingent claim \(H/B_T\) is non-negative and not identically equal to \(0\), i.e.\ \(L \setminus \cC \cap \R^m_+\) is not allowed to happen.
+Recall, arbitrage opportunities are defined by \[
+    V_0^\phi = 0,\quad \P(V_T^\phi \geq 0) = 1,\quad \P(V_T^\phi > 0) > 0.
+\]
+Hence, (NA) exactly means \(L \setminus \cC \cap \R^m_+ = \set{0}\). We need the following auxiliary result.
+
+\begin{lemma}\label{lem:intermediaryResultForFundamental}
+    For any \(Z \notin \cC\), there exists a martingale measure \(\Q \in \cM\) such that \(\E_\Q(Z) > 0\).
+\end{lemma}
+In words, for every such random variable \(Z\), i.e.\ that is not dominated by discounted claims with price \(0\) there exists \(\Q \in \cM\) with \(\E_\Q(Z) > 0\). To show this, we need the following separation theorem. For this, recall that a set \(K \subseteq \R^n\) is convex if for all \(x,y \in K, \lambda \in [0,1]: \lambda x + (1-\lambda)y \in K\).
+\begin{lemma}[Separation Lemma]\label{lem:separation}
+    Let \(K\) be closed, convex and non-empty and let \(Z \notin K\). Then there exists a linear \(f: \R^n \to \R\) and \(\gamma \in \R\) such that \(f(x) \leq \gamma\) for all \(x \in K\) and \(f(Z) > \gamma\).
+\end{lemma}
+We do not prove this here.
+
+\begin{proof}[Proof of~\cref{lem:intermediaryResultForFundamental}]
+    We observe that \(\cC\) is closed and convex. By~\cref{lem:separation} we deduce that there is a linear mapping \(f(x) = ax, a \in \R^m\) and \(\gamma \in \R\) with \[
+        \sum_{i=1}^m a_i H_i \leq \gamma < \sum_{i=1}^m a_i Z_i.
+    \]
+    In particular, \(0 \in \cC\). Hence \(0 \leq \sum_{i=1}^m a_i Z_i\). Hence, we may choose \(\gamma=0\). Now consider \(\indic[\omega_i]\). We have \(-\indic[\omega_i] \leq 0 \leq G_T^0 \implies -\indic[\omega_i] \in \cC\) for all \(\omega_i\). Thus \(- a_i \leq 0\)
+    and \(\sum_{i=1}^m a_i > 0\) as \(a_i \neq 0\) since \(0 < \sum_{i=1}^m a_i Z_i\) by the second part of the separation theorem. We may construct a probability measure \(\Q(\set{\omega_i}) = \frac{a_i}{\sum_{j=1}^m a_j}\). This is our candidate for the EMM. Indeed, this \(\Q\) is in \(\cM\) since \(\pm G_T^\alpha = G_T^{\pm \alpha}\) (the gains process is linear in \(\alpha\)) and hence \(\pm G_T^\alpha = G_T^{\pm \alpha} \in \cC\) by construction. Again, by the separation theorem \[
+        \pm G_T^\alpha \leq 0\quad \forall i \implies \E_\Q G_T^\alpha = \frac{1}{\sum_{j=1}^m a_j} \sum_{i=1}^m a_i G_T^\alpha(\omega_i) \leq 0.
+    \]
+    The same holds for \(-\E_\Q G_T^\alpha \leq 0\) and hence \(\E_\Q G_T^\alpha = 0\) for all \(\alpha \in \cA\). We observe that \(\E_\Q(Z) = \frac{1}{\sum_j a_j} \sum_i a_i Z_i > 0\).
+\end{proof}
 
 \section{Completeness and equivalent martingale measures}
 \section{Risk--neutral pricing of contingent claims}
