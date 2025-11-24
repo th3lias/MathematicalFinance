@@ -1203,7 +1203,7 @@ Recall, arbitrage opportunities are defined by \[
 \]
 Hence, (NA) exactly means \(L \setminus \cC \cap \R^m_+ = \set{0}\). We need the following auxiliary result.
 
-\begin{lemma}\label{lem:intermediaryResultForFundamental}
+\begin{lemma}[First fundamental theorem of asset pricing]\label{lem:firstFundamental}
     For any \(Z \notin \cC\), there exists a martingale measure \(\Q \in \cM\) such that \(\E_\Q(Z) > 0\).
 \end{lemma}
 In words, for every such random variable \(Z\), i.e.\ that is not dominated by discounted claims with price \(0\) there exists \(\Q \in \cM\) with \(\E_\Q(Z) > 0\). To show this, we need the following separation theorem. For this, recall that a set \(K \subseteq \R^n\) is convex if for all \(x,y \in K, \lambda \in [0,1]: \lambda x + (1-\lambda)y \in K\).
@@ -1212,7 +1212,7 @@ In words, for every such random variable \(Z\), i.e.\ that is not dominated by d
 \end{lemma}
 We do not prove this here.
 
-\begin{proof}[Proof of~\cref{lem:intermediaryResultForFundamental}]
+\begin{proof}[Proof of~\cref{lem:firstFundamental}]
     We observe that \(\cC\) is closed and convex. By~\cref{lem:separation} we deduce that there is a linear mapping \(f(x) = ax, a \in \R^m\) and \(\gamma \in \R\) with \[
         \sum_{i=1}^m a_i H_i \leq \gamma < \sum_{i=1}^m a_i Z_i.
     \]
@@ -1223,7 +1223,123 @@ We do not prove this here.
     The same holds for \(-\E_\Q G_T^\alpha \leq 0\) and hence \(\E_\Q G_T^\alpha = 0\) for all \(\alpha \in \cA\). We observe that \(\E_\Q(Z) = \frac{1}{\sum_j a_j} \sum_i a_i Z_i > 0\).
 \end{proof}
 
+\begin{remark}
+    With the help of the set \(L\), we may hence write \[
+        \Q \in \cM \iff \E_\Q X = 0,\quad \forall X \in L.
+    \]
+    \(\cC\) consists of elements that are dominated by \(L\) and by monotonicity of expectation we obtain \[
+        \Q \in \cM \iff \E_\Q X \leq 0,\quad \forall X \in \cC.
+    \]
+\end{remark}
+The first fundamental theorem of asset pricing means that the following are equivalent:
+\begin{itemize}
+    \item (NA) holds,
+    \item \(\cM^+ \neq \emptyset\), i.e.\ there exists at least one EMM.
+\end{itemize}
+A financial market is hence free of arbitrage if and only if there exists a probability measure \(\Q\) which is equivalent to \(\P\) and such that the discounted stock prices \((\tS_t^k)\) are martingales under \(\Q\).
+To see this, use~\cref{thm:EMMAdmissibleEquivalence} to have the backward direction. For the forward direction, suppose (NA) holds. This means \[
+    \cC \cap \R^m_+ = \set{0} \implies \indic[\omega] \notin \cC\,\ \forall \omega \in \Omega.
+\]
+\Cref{lem:firstFundamental} now yields, that there is a \(\Q_\omega \in \cM\) such that \(\E_{\Q_\omega} \indic[\omega] = \Q_\omega(\set{\omega}) > 0\). Now define a probability measure on \((\Omega, \cF)\) by \[
+    \Q(\set{\omega}) = \frac{1}{m} \sum_{i=1}^m \underbrace{\Q_{\omega_i}(\set{\omega_i})}_{\in \cM\text{ and positive by~\cref{lem:firstFundamental}}}.
+\]
+Now, \(\Q(\set{\omega}) > 0\) for all \(\omega \in \Omega\) and \(\Q \in \cM\) as it is a convex combination of \(\Q_{\omega_i} \in \cM\). Hence \(\cM^+=\emptyset\) as \(\Q\) is equivalent to \(\P\).
+
 \section{Completeness and equivalent martingale measures}
+
+We have seen that the CRR model is complete when there are no arbitrage opportunities. In general markets however, we cannot deduce completeness from (NA).
+
+\subsection{Characterisations of complete financial markets}
+We come to the second fundamental theorem of asset pricing.
+\begin{theorem}[Second fundamental theorem of asset pricing]\label{thm:secondFundamental}
+    Suppose (NA). Then, the financial market is complete if and only if there exists a unique EMM, i.e.\ \(\abs[\cM^+]=1\).
+\end{theorem}
+\begin{proof}
+
+    (Part (a).)
+
+    Let the market be complete. (NA) implies by the first fundamental theorem of asset pricing,~\Cref{lem:firstFundamental}, that \(\cM^+ \neq \emptyset\). Now, we show uniqueness by showing that two arbitrary elements of \(\cM^+\) are the same. Let \(\Q_1, \Q_2 \in \cM^+\). Let \(H\) be an arbitrary contingent claim and \(\phi = (\alpha, \beta)\) be a corresponding hedging strategy which exists since we assumed completeness. Then \[
+        \frac{H}{B_T} = V_0^\phi + G_T^\alpha \implies \E_{\Q_1}G_T^\alpha = \E_{\Q_2} G_T^\alpha=0
+    \]
+    by~\Cref{thm:EMMAdmissibleEquivalence} and since \(H\) is arbitrary, \(\Q_1=\Q_2\) and thus \(\abs[\cM^+]=1\)
+    
+    (Part (b).)
+
+    Let the market be incomplete. We show \(\abs[\cM^+] > 1\). Recall that we identify random vectors with \[
+        X = (X(\omega_1), \dots, X(\omega_m)) \in \R^m,\, X_i = X(\omega_i).
+    \]
+    Now let \[
+        L \defn \set{X \in \R^m \mid X_i = c+G_T^\alpha(\omega_i),\, i=1,\dots,m, c \in \R^m, \alpha \in \cA}
+    \]
+    be the set of discounted claims that are attainable. (NA) and the first fundamental theorem of asset pricing imply \(\cM^+ \neq \emptyset\). Let now \(\Q \in \cM^+\) and \(\Q(\set{\omega_i}) = q_i\) for \(i=1,\dots,m\). For random variables \(Z, Y\) on \(\Omega\) we consider the scalar product \[
+        \inn[Z][Y] = \E_\Q\left(Z \cdot Y\right) = \sum_{i=1}^m Z_i Y_i q_i.
+    \]
+    By assumption, there exists a non-attainable claim \(H\), i.e.\ \(H/B_T \in \R^m\) but \(H/B_T \notin L\).
+    L is however a real subspace of \(\R^m\) and the complement is non-trivial, i.e.\ there is \(Z \in L^\perp\) with \(Z \neq 0\) such that \[
+        \inn[Z][Y] = \sum_{i=1}^m Z_i Y_i q_i = 0\quad \forall Y \in L.
+    \]
+    Since \(1, \dots, 1 \in L\), this means \(\sum_{i=1}^m Z_i q_i = 0\). Now, define a new probability measure \(\Q' \neq \Q\) and show that \(\Q' \in \cM^+\). Hence, let \(\Q'(\set{\omega_i})=\left(1+\frac{Z_i}{2\norm[Z]}q_i\right)\) for all \(i\) and \(\norm[Z]=\max_{1 \leq i \leq m} \abs[Z_i]\). \(\Q'\) is indeed a probability measure since \[
+        \Q'(\Omega) = 1 + \frac{1}{2\norm[Z]} \underbrace{\sum_{i=1}^m Z_i q_i}_{=0} = 1.
+    \]
+    In particular, \(\Q'\) is equivalent to \(\P\) since singletons have positive weight. It is left to show that \(\Q \in \cM\) as well. For that, we use again~\Cref{thm:EMMAdmissibleEquivalence}. Let \(Y = (c+G_T^\alpha(\omega_1),\dots,c+G_T^\alpha(\omega_m)) \in L\) be arbitrary. Now,
+    \begin{align*}
+        c + \E_{\Q'} G_T^\alpha = \E_{\Q'} Y &= \sum_{i=1}^m Y_i \Q'(\set{\omega_i})\\
+        &= \sum_{i=1}^m Y_i\left( 1 + \frac{Z_i}{2\norm[Z_i]} \right)q_i\\
+        &= \sum_{i=1}^m Y_i q_i + \frac{1}{2\norm[Z]} \underbrace{\sum_{i=1}^m Y_i Z_i q_i}_{=0\,\ \forall Y \in L}\\
+        &= \E_\Q Y = c + \E_\Q G_T^\alpha = c.
+    \end{align*}
+    Hence, \(\Q' \in \cM\) and the equivalence to \(\P\) implies \(\Q' \in \cM^+\).
+\end{proof}
+\begin{remark}
+    A necessary condition for the completeness of a financial market is \(\cF_t = \cF_t^S\) for any \(t\). Otherwise, there exists a timestamp \(t\) and \(A \in \cF_t\) such that \(A \notin \cF_t^S\). Define \(H = \indic_A\), then \(H\) is not attainable. This is a serious restriction: the filtration can thus not contain further information about economic factors.
+\end{remark}
+We can also characterise completeness via martingale properties.
+\begin{theorem}\label{thm:characterisationViaMartingaleProperties}
+    Suppose (NA) holds and let \(\Q \in \cM^+\). Then, the market is complete if and only if any \((\cF_t)\)-martingale \((M_t)\) w.r.t.\ \(\Q\) has the representation \[
+        M_t = M_0 + \sum_{n=1}^t \alpha_{n-1} \Delta \tS_n,\quad t=0,\dots,T
+    \]
+    for an \((\cF_t)\)-adapted process \((\alpha_t)\).
+\end{theorem}
+\begin{proof}
+    Let the market be complete. \(H = M_T B_T\) is an \(\cF_T\)-measurable claim. Hence, there exists a self-financing strategy \(\phi = (\alpha, \beta)\) such that \(V_T^\phi = H = M_TB_T\) and respectively \(V_T^\phi/B_T=M_T\). By~\Cref{thm:wealthMartingale}, the discounted wealth process is a \(\Q\)-martingale. But by assumption, \((M_t)\) is a \(\Q\)-martingale as well, i.e.\ \[
+        \frac{V_T^\phi}{B_T} = \E_\Q \left(\frac{H}{B_T} \mid \cF_t\right) = \E_\Q \left(M_T \mid \cF_t\right) = M_t.
+    \]
+    \Cref{le:22} asserts that \[
+        \frac{V_t^\phi}{B_t} = V_0^\phi + G_t^\alpha = \underbrace{V_0^\phi}_{=M_0} + \sum_{n=1}^t \alpha_{n-1} \Delta \tS_n = M_t.
+    \]
+    Now to the backward direction. Define \(M_t = \E_\Q\left(H/B_T \mid \cF_t\right)\) for any \(t=0,\dots,T\). This is a Doob-martingale, recall \(X \in \cF\), then \(X_t = \E(X \mid \cF_t)\) is a \((\cF_t)\)-martingale.
+    Hence, \(M_t\) is a \((\cF_t)\)-martingale under \(\Q\) and \(V_0^\phi=u_0 \in \R\) and there exists \(\alpha\) such that \[
+        M_t = M_0 + \sum_{n=1}^t \alpha_{n-1}\Delta \tS_n = V_t^\phi + G_t^\alpha = \frac{V_t^\phi}{B_t}
+    \]
+    again by~\Cref{le:22}. Hence \(H/B_t=M_t=V_t^\phi/B_t\) and the market is complete.
+\end{proof}
+
+\subsection{Computation of martingale measures}
+
+In the CRR model, \(\Q\) could be explicitly determined. How do the measures look like in more general financial markets (if they exist)? We mimic the procedure from the CRR model. Hence, consider the following product space for the price process of the risky asset: \[
+    \Omega = \Omega_1 \times \cdots \times \Omega_T
+\]
+where \(\Omega_t\) is the finite set of all possible states in period \(t\). Let now \(Y_t\) be the projection onto \(\Omega_t\), i.e.\ \(Y_t(\omega)=y_t\) for any \(\omega \in \Omega\) and \(h_t=(y_1,\dots,y_t)\) is the history until time \(t\). In the CRR model we had \(\Omega_t = \set{u,d}\). Our sigma-algebra at time \(t\) is \(\cF_t = \sigma(Y_1, \dots, Y_t)\) and \(S_t \in \cF_t\) means that, by the factorisation lemma, there exists a function \(s_t = s_t(Y_1, \dots, Y_t)\). Every probability measure \(\Q\) on \((\Omega, \cF)\) can be factorised using transition kernels, i.e.\ \[
+    \Q(\set{\omega})=q_1(y_1)q_2(y_2 \mid y_1) \cdot \cdots \cdot q_T(y_T \mid h_{T-1})
+\]
+where \(q_t(y_t \mid h_{t-1})\) is the probability that \(y_t\) is realised at \(t\) given that \(h_{t-1}\) has been realised so far. In the CRR model, \(q_t(u \mid h_{t-1}) = q = \frac{1+r-d}{u-d}\), i.e.\ the transition probabilities do not depend on the history. Now, these transition probabilities may differ.
+\color{red}Here, a tree is supposed to go.\color{black}
+Under \(\Q \in \cM\), we know \[
+    \E_\Q(\Delta \tS_t^k \mid \cF_{t-1})=0
+\]
+and hence \(0 = \int_A \Delta \tS_t^k\ \mathrm{d} \Q\) for all \(A \in \cF_{t-1}\) and \(t,k\). Hence \[
+    0 = \sum_{y \in \Omega_t} \Delta \tS_t^k(h_{t-1}, y) q_t(y \mid h_{t-1}).
+\]
+We see that we may determine \(\Q \in \cM\) by determining the conditional probabilities \(q_t(y \mid h_{t-1})\) from the system of equations.
+\begin{align}\label{ali:systemOfEquations}
+    \sum_{y \in \Omega_k} q_t(y \mid h_{t-1}) \Delta \tS_t^k(h_{t-1}, y) &= 0\\
+    \sum_{y \in \Omega_k} q_t (y \mid h_{t-1}) &= 1
+\end{align}
+gives us \(d+1\) equations for every risky asset \(k=1,\dots,d\) and \(t=1,\dots,T\). The system for fixed \(t\) and \(h_{t-1}\) has exactly \(d+1\) equations and \(\abs[\Omega_t]\) unknowns (\(y \in \Omega_k\)).
+A unique solution of this does exist, when for all \(h_{t-1} \in \Omega\), the vectors \[
+    (\Delta \tS_t^k(h_{t-1},y), y \in \Omega_t) \in \R^{\abs[\Omega_t]}
+\]
+and \((1,\dots,1) \in \R^{\abs[\Omega_t]}\) are linearly independent and \(d+1=\abs[\Omega_t]\). The rule of thumb is that a unique martingale measure does in general only exist if \(\abs[\Omega_t]=d+1\), i.e.\ the number of all assets is equal to the number of possible market states. If for the solution, also \(q_t(y \mid h_{t-1}) > 0\) holds, then \(\Q \in \cM^+\) and thus (NA) holds. We recall that in the CRR model, \(\abs[\Q_t]=\abs[\set{u,d}]=2\) is the number of assets (i.e.\ stock + MMA). Moreover, \(((d-1)t, (u-1)t)\) and \((1+r, 1+r)\) are linearly independent if \(d < 1 + r < u\). Hence, the CRR model is free of arbitrage and complete.
 \section{Risk--neutral pricing of contingent claims}
 \section{American options}
 \section{Portfolio optimization}
