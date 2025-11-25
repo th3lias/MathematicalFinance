@@ -196,6 +196,7 @@ In this section, we used a perfect market model.
 
 In a perfect market there is no arbitrage. Supply and demand offset each other perfectly and there are unique prices.
 
+\newpage
 \section{Financial markets and the finite state space}
 
 Our goal here is to introduce general financial markets. Finite means that there is a finite number of market states and a finite number of trading times \(\set{0, \dots, T}\). We describe trading strategies, arbitrage strategies and options formally.
@@ -489,7 +490,7 @@ Options are characterised by the payoff. For \emph{european options}, the payoff
 
 With this definition we get the following lemma.
 
-\begin{lemma}[Price of attainable claims]
+\begin{lemma}[Price of attainable claims]\label{lem:priceOfAttainableClaims}
     Suppose absence of arbitrage (NA). Then, the price \(\pi(H)\) for an attainable contingent claim \(H\) is unique and thus independent of the choice of hedging strategy.
 \end{lemma}
 \begin{proof}
@@ -566,6 +567,7 @@ With this definition we get the following lemma.
     All considerations in this section are without accounting for transaction costs.
 \end{remark}
 
+\newpage
 \section{The Cox--Ross--Rubinstein model}
 
 This is a simple model in discrete time. We assume \(1\) riskless asset and \(1\) risky asset.
@@ -1063,6 +1065,7 @@ We state the CLT for completeness.
 \end{theorem}
 One may verify the conditions on the statement for the proof of~\cref{th:BLACKSCHOLES_CRR}.
 
+\newpage
 \section{Absence of arbitrage and equivalent martingale measures}
 We use the abbreviation EMM for ''equivalent martingale measure''.
 We already saw such measures as the \(q\)'s appearing in the previous chapters.
@@ -1201,7 +1204,7 @@ The above means that we start from initial investment \(0\) i.e.\ from \(L\) or 
 Recall, arbitrage opportunities are defined by \[
     V_0^\phi = 0,\quad \P(V_T^\phi \geq 0) = 1,\quad \P(V_T^\phi > 0) > 0.
 \]
-Hence, (NA) exactly means \(L \setminus \cC \cap \R^m_+ = \set{0}\). We need the following auxiliary result.
+Hence, (NA) exactly means \(L \setminus \cC \cap \R^m_+ = \set{0}\).
 
 \begin{lemma}[First fundamental theorem of asset pricing]\label{lem:firstFundamental}
     For any \(Z \notin \cC\), there exists a martingale measure \(\Q \in \cM\) such that \(\E_\Q(Z) > 0\).
@@ -1245,6 +1248,7 @@ To see this, use~\cref{thm:EMMAdmissibleEquivalence} to have the backward direct
 \]
 Now, \(\Q(\set{\omega}) > 0\) for all \(\omega \in \Omega\) and \(\Q \in \cM\) as it is a convex combination of \(\Q_{\omega_i} \in \cM\). Hence \(\cM^+=\emptyset\) as \(\Q\) is equivalent to \(\P\).
 
+\newpage
 \section{Completeness and equivalent martingale measures}
 
 We have seen that the CRR model is complete when there are no arbitrage opportunities. In general markets however, we cannot deduce completeness from (NA).
@@ -1323,8 +1327,7 @@ where \(\Omega_t\) is the finite set of all possible states in period \(t\). Let
     \Q(\set{\omega})=q_1(y_1)q_2(y_2 \mid y_1) \cdot \cdots \cdot q_T(y_T \mid h_{T-1})
 \]
 where \(q_t(y_t \mid h_{t-1})\) is the probability that \(y_t\) is realised at \(t\) given that \(h_{t-1}\) has been realised so far. In the CRR model, \(q_t(u \mid h_{t-1}) = q = \frac{1+r-d}{u-d}\), i.e.\ the transition probabilities do not depend on the history. Now, these transition probabilities may differ.
-\color{red}Here, a tree is supposed to go.\color{black}
-Under \(\Q \in \cM\), we know \[
+\color{red}Here, a tree is supposed to go.\color{black}\ Under \(\Q \in \cM\), we know \[
     \E_\Q(\Delta \tS_t^k \mid \cF_{t-1})=0
 \]
 and hence \(0 = \int_A \Delta \tS_t^k\ \mathrm{d} \Q\) for all \(A \in \cF_{t-1}\) and \(t,k\). Hence \[
@@ -1332,15 +1335,180 @@ and hence \(0 = \int_A \Delta \tS_t^k\ \mathrm{d} \Q\) for all \(A \in \cF_{t-1}
 \]
 We see that we may determine \(\Q \in \cM\) by determining the conditional probabilities \(q_t(y \mid h_{t-1})\) from the system of equations.
 \begin{align}\label{ali:systemOfEquations}
-    \sum_{y \in \Omega_k} q_t(y \mid h_{t-1}) \Delta \tS_t^k(h_{t-1}, y) &= 0\\
-    \sum_{y \in \Omega_k} q_t (y \mid h_{t-1}) &= 1
+    \begin{split}
+        \sum_{y \in \Omega_t} q_t(y \mid h_{t-1}) \Delta \tS_t^k(h_{t-1}, y) &= 0\\
+        \sum_{y \in \Omega_t} q_t (y \mid h_{t-1}) &= 1
+    \end{split}
 \end{align}
-gives us \(d+1\) equations for every risky asset \(k=1,\dots,d\) and \(t=1,\dots,T\). The system for fixed \(t\) and \(h_{t-1}\) has exactly \(d+1\) equations and \(\abs[\Omega_t]\) unknowns (\(y \in \Omega_k\)).
+gives us \(d+1\) equations for every risky asset \(k=1,\dots,d\) and \(t=1,\dots,T\). The system for fixed \(t\) and \(h_{t-1}\) has exactly \(d+1\) equations and \(\abs[\Omega_t]\) unknowns (\(y \in \Omega_t\)).
 A unique solution of this does exist, when for all \(h_{t-1} \in \Omega\), the vectors \[
     (\Delta \tS_t^k(h_{t-1},y), y \in \Omega_t) \in \R^{\abs[\Omega_t]}
 \]
 and \((1,\dots,1) \in \R^{\abs[\Omega_t]}\) are linearly independent and \(d+1=\abs[\Omega_t]\). The rule of thumb is that a unique martingale measure does in general only exist if \(\abs[\Omega_t]=d+1\), i.e.\ the number of all assets is equal to the number of possible market states. If for the solution, also \(q_t(y \mid h_{t-1}) > 0\) holds, then \(\Q \in \cM^+\) and thus (NA) holds. We recall that in the CRR model, \(\abs[\Q_t]=\abs[\set{u,d}]=2\) is the number of assets (i.e.\ stock + MMA). Moreover, \(((d-1)t, (u-1)t)\) and \((1+r, 1+r)\) are linearly independent if \(d < 1 + r < u\). Hence, the CRR model is free of arbitrage and complete.
+\begin{example}
+    Consider \(T=2\) periods with one riskless asset and \(B_0=B_1=B_2=1\). The stock behaves as
+    \color{red}Tree here again.\color{black}
+    We have \(\Omega = \set{u_1,d_1} \times \set{u_2,d_2}\) and \(\Q\) is a function as \(\Q(\set{y_1, y_2})=q_1(y_1)q_2(y_2\mid y_1)\). At \(t=1\), by~\cref{ali:systemOfEquations}, \(
+        q_1(u_1)(6-4)+q_1(d_1)(3-4)=0
+    \) and \(
+        q_1(u_1)+q_1(d_1)=1
+    \).
+    This implies \(q_1(u_1)=1/3\) and \(q_1(d_1)=2/3\). At time \(t=2\), the upper node yields \(q_2(u_2 \mid u_1)(8-6)+q_2(d_2 \mid u_1)(5-6)=0\) and \(q_2(u_2 \mid u_1) + q_2(d_2 \mid u_1)=1\) finally yields \(q_2(u_2 \mid u_1) = 1/3\) and \(q_2(d_2 \mid u_1) = 2/3\). The lower node yields \(q_2(u_2 \mid d_1)(4-3)+q_2(d_2 \mid d_1)(2-3)=0\) and \(q_2(u_2 \mid d_1) + q_2(d_2 \mid d_1)=1\) gives \(q_2(u_2\mid d_1) = 1/2\) and \(q_2(d_2 \mid d_1) = 1/2\). In total,
+    \begin{align*}
+        \Q(\set{u_1,u_2})&=q_1(u_1)q_2(u_2 \mid u_1) = \frac{1}{3}\frac{1}{3}=\frac{1}{9}\\
+        \Q(\set{u_1,d_2})&=q_1(u_1)q_2(d_2 \mid u_1) = \frac{1}{3}\frac{2}{3}=\frac{2}{9}\\
+        \Q(\set{d_1,u_2})&=q_1(d_1)q_2(d_2 \mid d_1) = \frac{2}{3}\frac{1}{2}=\frac{1}{3}\\
+        \Q(\set{d_1,d_2})&=q_1(d_1)q_2(d_2 \mid d_1) = \frac{2}{3}\frac{1}{2}=\frac{1}{3}.
+    \end{align*}
+    We notice that the total mass is \(1\). \underline{Summary:} All linear systems of equations are uniquely solvable and \(\Q(\set{\omega}) > 0\) for all \(\omega \in \Omega\). Hence there exists a unique equivalent martingale measure and by the second fundamental theorem, the market is complete and satisfies (NA).
+\end{example}
+
+\begin{example}
+    \color{red}We start with a modified tree from the previous example.\color{black}
+
+    We now have \(\Omega = \set{u_1,d_1} \times \set{u_2,m_2,d_2}\) and hence \(\Q(\set{y_1,y_2})=q_1(y_1)q_2(y_2 \mid y_1)\) with \(\P(\set{d_1,m_2})=0 \implies \Q(\set{d_1,m_2})=0\). Now, only the system of equations at \(t=2\), upper node has to be altered. Indeed,
+    \[
+        q_2(u_2 \mid u_1)(5-6)+q_2(m_2 \mid u_1)(7-6)+q_2(d_2 \mid u_1)(5-6) = 0
+    \]
+    and \(q_2(u_2 \mid u_1) + q_2(m_2 \mid u_1) + q_2(d_2 \mid u_1)=1\). We have three unknowns and two equations, hence the system is underdetermined! We thus have a family of solutions as \[
+        q_2(u_2 \mid u_1) = q, q_2(m_2 \mid u_1) = \frac{1}{2}-\frac{3}{2}q
+    \]
+    and \(q_2(d_2 \mid u_1) = \frac{1}{2}+\frac{1}{2}q\) where \(q \in (0, 1/3)\) such that \(q_2(\cdot \mid \cdot) \in (0,1)\). This yields \[
+        \Q(\set{\omega}) > 0 \iff q \in (0, 1/3) \implies \P \sim \Q.
+    \]
+    Hence, there exists a bunch of EMMs. Our fundamental theorems yield that this market is free of arbitrage but not complete.
+\end{example}
+
+\begin{example}
+    We now take a 1-period market with \(B_0=B_1=1\) and two stocks with possible states \color{red}a complicated tree here again. \color{black}
+
+    \(\Omega = \set{u,m,d}\). If \(T=1\), \(q(u)(10-5)+q(m)0+q(d)(2-5)=0\) (stock 1) and \(q(u)(15-10)+q(m)(8-10)+q(d)(12-10)=0\) (stock 2). Our normalisation gives \(q(u)+q(d)+q(m)=1\).
+
+    3 equations, 3 unknowns yields the unique solution \[
+        \Q(\set{u})=\frac{6}{41},\quad \Q(\set{m})=\frac{25}{41},\quad \Q(\set{d})=\frac{10}{41}.
+    \]
+    The total mass is \(1\) and every singleton event has a unique solution. Hence, the EMM is unique, the market is complete and (NA) holds.
+\end{example}
+
+\newpage
 \section{Risk--neutral pricing of contingent claims}
+
+We will find an explicit formula for the price of specific options. If the claims are not attainable, the arbitrage-free price lies within an interval. We first assume (NA) holds, \(\cF_0=\set{\emptyset, \Omega}\) and \(\cF_T=\cF=2^\Omega\). We know: price of \(t=0\), \(\pi(H)\) is given by the initial value of the corresponding hedging strategy for attainable claims. Otherwise, arbitrage would exist.
+In practice, options are dynamically traded and have a price at \underline{any} point in time \(t=0,1,\dots,T\). Price at \(t\) depends on \(S_t\) and is an \(\cF_t\)-measurable random variable. In particular, price at time \(T\) is just \(H\). The price of \(H\) at time \(t\) is just the capital that is needed at time \(t\) (depending on the history) in order to replicate \(H\). If \(\phi\) is a hedging strategy for \(H\), then \(V_t^\phi\) is sufficient to hedge \(H\) from time \(t\) onwards. We now see a generalisation of~\Cref{lem:priceOfAttainableClaims}: \(H\) shows that the price is also unique at time \(t\).
+\begin{lemma}[Price of attainable claims, generalisation]\label{lem:priceAttainableClaims2}
+    For every attainable claim \(H\) and for self-financing strategies \(\phi\) and \(\psi\) with \(V_T^\phi=H=V_T^\psi\), we have \[
+        V_t^\phi=V_t^\psi,\quad \forall t \in \set{0, \dots, T}.
+    \]
+    \(\pi_t(H)=V_t^\phi\) is the claims price at \(t\).
+\end{lemma}
+\begin{proof}
+    (NA) implies existence of the EMM \(\Q\) and~\Cref{thm:wealthMartingale} yields \(\frac{V_t^{\set{\phi, \psi}}}{B_t}\) are \(\Q\)-martingales. Hence \[
+        \frac{V_t^\phi}{B_t}=\E_\Q\left(\frac{V_T^\phi}{B_T} \mid \cF_t\right) = \E_\Q\left(\frac{H}{B_T} \mid \cF_t\right) = \E_\Q \left(\frac{V_T^\psi}{B_T}\mid \cF_t\right)=\frac{V_t^\psi}{B_t}.\qedhere
+    \]
+\end{proof}
+
+\begin{theorem}[Risk-neutral pricing theorem]\label{thm:riskNeutralPricing}
+    Let \(H\) be an attainable claim. Then, for the price of \(H\) at time \(t\) we have \[
+        \pi_t(H) = B_t \E_\Q \left(\frac{H}{B_T} \mid \cF_t\right)
+    \]
+    for any \(\Q \in \cM^+\). In particular, \(\pi_t(H)\) is independent of the choice of \(\Q\).
+\end{theorem}
+\begin{proof}
+    \(H\) is attainable, hence there is a self-financing trading strategy \(\phi=(\alpha, \beta)\) such that \(H=V_T^\phi\). We assume (NA), hence \(\cM^+ \neq \emptyset\). Let \(\Q \in \cM^+\) and use~\Cref{thm:wealthMartingale} to obtain that \(V_t^\phi/B_t\) is a \(\Q\)-martingale. Then \[
+        \pi_t(H) = V_t^\phi = B_t \E_\Q \left(\frac{V_T^\phi}{B_T} \mid \cF_t\right) = B_t \E_\Q \left( \frac{H}{B_T} \mid \cF_t \right)
+    \]
+\end{proof}
+\begin{corollary}
+    Let \(H\) be an attainable claim, then \(\pi(H) = \pi_0(H) = \E_\Q \left(\frac{H}{B_T}\right)\) for all \(\Q \in \cM^+\).
+\end{corollary}
+\begin{proof}
+    \Cref{thm:riskNeutralPricing} with \(\cF_0=\set{\emptyset, \Omega}\) and \(B_0=1\).
+\end{proof}
+\begin{proof}[Alternative proof (for fun)]
+    \(H\) is attainable means there is a self-financing trading strategy with \(\phi=(\alpha, \beta)\) with \[
+        \frac{V_T^\phi}{B_T}=\frac{H}{B_T}=V_0^\phi+G_T^\alpha.
+    \]
+    (NA) implies there is \(\Q \in \cM^+\) with \(\E_\Q(G_T^\alpha)=0\). Now, \[
+        \E_\Q\left(\frac{H}{B_T}\right)=V_0^\phi+\E_\Q(G_T^\alpha)=V_0^\phi=\pi(H).\qedhere
+    \]
+\end{proof}
+
+\begin{remark}
+    If a contingent claim is a linear combination of other contingent claims as \(H=\lambda_1 H_1 + \lambda_2 H_2\) with \(H_1,H_2\) attainable with \(H_i/B_T=V_0^i+G_T^{\alpha_i}\) yields \(H/B_T=V_0+G_T^\alpha\) with \(V=\lambda_1 V_0^1+\lambda_2 V_0^2\) and \(\pi(H)=\lambda_1 \pi(H_1)+\lambda_2 \pi(H_2)\) and \(\alpha = \lambda_1 \alpha_1 + \lambda_2 \alpha_2\).
+\end{remark}
+
+\subsection{RA-Call-Parity and Option Portfolios}
+\subsubsection{Put-Call-Parity}
+Consider two portfolios \(A\) and \(B\):
+\begin{table}[hp]
+    \begin{center}
+        \begin{tabular}{c | c | c | c}
+            Portfolio A & Portfolio A & Portfolio B & Portfolio B\\
+            \hline
+            Action at \(t=0\) & Payoff at \(t=T\) & Action at \(t=0\) & Payoff at \(t=T\)\\
+            \hline
+            Buy a call & \((S_T-K)^+\) & Buy a put & \((K-S_T)^+\) \\
+            \hline
+            \(K/B_T\) in riskless asset & K & Buy one stock & \(S_T\) \\
+            \hline
+            Costs: \(C+K/B_T\) & Payoff:  \((S_T-K)^++K\) & \(P+S_0\) & Payoff: \((K-S_T)^++S_T\)
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\((S_T-K)^++K=\max(K,S_T)=(K-S_T)^++S_T\). \Cref{lem:priceOfAttainableClaims}: if (NA) holds, then the price \(\pi(H)\) of attainable claims is uniquely determined, independent of the choice of hedging strategy.
+
+Portfolio A and B have to have the same price at time \(t=0\). \Cref{thm:riskNeutralPricing} yields \(C+K/B_T=P+S_0\). In particular, \(C_t+K B_t/B_T = P_t + S_t\).
+
+The put-call parity is solely based on (NA). It is independent of the market-model.
+
+It holds only if call and put have the same strike \(K\) and maturity \(T\)!
+
+\subsubsection{Spreads}
+Spreads are a combination of two calls or two puts with \emph{different times to maturity (horizontal spread)} or \emph{different strike price (vertical spread)}.
+
+\begin{example}[(Vertical) Bull Spread]
+    Net payoff of a bull spread based on 2 puts. Net payoff: \(H-\pi(H)B_T\).
+
+    \color{red}Some graphs go here.\color{black}
+
+    Net payoffs of \(\pi_1^P\), resp.\ \(\pi_2^P\): \((K_i-S_T)^+-\pi_i^P B_T\).
+\end{example}
+
+\begin{example}[Straddles]
+    Combination of a call and put with the same strike price \(K\) and maturity \(T\).
+    \begin{itemize}
+        \item Buy both options: Long straddle,
+        \item Sell both options: Short straddle.
+    \end{itemize}
+    \color{red}Some graph here.\color{black}
+\end{example}
+
+\subsection{Exotic Options}
+European put/call options are so-called plain vanilla options. All other options are exotic. Here: consider options that depend on the maximum of the stock price.
+
+\begin{example}[Standard]
+    \begin{itemize}
+        \item Up-and-in call option: \[
+            H_{u_i}^{\text{call}} = \begin{cases}
+                (S_T-K)^+, &S_t \geq B\,\ \forall 0 \leq t \leq T\\
+                0 &\text{else}.
+        \end{cases}
+    \]
+        \item Up-and-out call option: \[
+            H_{u_o}^{\text{call}} = \begin{cases}
+                0 &\max_{0 \leq t \leq T} S_t \geq B\\
+                (S_T-K)^+ &\text{else}.
+            \end{cases}
+        \]
+        \item Look-back-put: \[
+            H_{max}^{\text{put}} = \max_{0 \leq t \leq T} S_t - S_T.
+        \]
+        \item Barrier options:
+        (a) Knock-in, (b) Knock-out.
+    \end{itemize}
+\end{example}
+
 \section{American options}
 \section{Portfolio optimization}
 
