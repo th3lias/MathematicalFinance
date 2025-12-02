@@ -897,7 +897,7 @@ Missed the first few minutes here.
 
 What about the price of a contingent claim? \(H\) in the multi-period CRR model.
 
-\begin{theorem}[should be 3.4]
+\begin{theorem}[should be 3.4]\label{thm:34}
     Suppose (NA). Then the \(T\)-period CRR is complete. In particular, for every contingent claim \(H\), there exists a unique self-financing trading strategy \(\phi=(\alpha, \beta)\) such that \(V_T^\phi=H\). The price of \(H\) is then given by \[
         \pi(H) = \beta_0B_0+\alpha_0S_0 = \sum_{\omega = (y_1, \dots, y_T) \in \Omega} q_{y_1} \cdot \cdots \cdot q_{y_T} \frac{H(\omega)}{B_T} = \E_\Q \frac{H}{B_T}.
     \]
@@ -1508,6 +1508,141 @@ European put/call options are so-called plain vanilla options. All other options
         (a) Knock-in, (b) Knock-out.
     \end{itemize}
 \end{example}
+
+\subsubsection*{Digression: Random Walks} Let \((Z_t)\) denote a \emph{symmetric random walk} on \(\mathbb Z\), i.e.\ \(Z_0=0\) and \(Z_t = \sum_{k=1}^t Y_k\) where \((Y_k)\) are i.i.d.\ random variables such that \(\P(Y_k=1)=\P(Y_k=-1)=\frac{1}{2}\). Hence, is equally probable in each point in time to take a step forward or backward. We only consider random walks up to time \(T\). Each realisation \((y_1, \dots, y_T) \in \set{\pm 1}^T = \Omega\) of \((Y_1,\dots,Y_T)\) has the same probability \(1/2^T\).
+
+\begin{lemma}[Random Walk 1]\label{lem:randomWalk1}
+    For \(t \in \N\) and \(b\) such that \(-T \leq b \leq T\). We have \[
+        \P(Z_T=b) = \begin{cases}
+            \frac{1}{2^T} {T \choose (T+b)/2} &T, b \text{ have the same parity}\\
+            0 &\text{else}.
+        \end{cases}
+    \]
+\end{lemma}
+\begin{remark}
+    \(T,b\) have the same parity if they are even or uneven at the same time.
+\end{remark}
+\begin{proof}
+    If we start from point \(0\) at time \(0\) and we want to reach \(b \geq 0\) at time \(T\), then we need to have \(b \geq 0\) more upwards movements than downward movements. Hence, there are \(\frac{T-b}{2}\) downward movements and \(\frac{T-b}{2}+b > \frac{T-b}{2}\) upwards movements. If \(\frac{T-b}{2} \in \N\), \(T, b\) need to have the same parity, otherwise \(\frac{T-b}{2} \notin \N_0\). The number of paths from 0 at time \(0\) to point \(b\) at \(T\) is equal to the number of possibilities to distribute the \(\frac{T-b}{2}\) downward movements. We have \({T \choose \frac{T-b}{2}} = {T \choose \frac{T+b}{2}}\) possibilities. As all paths are equally probable, the claim follows. If \(b < 0\), similar arguments hold.
+\end{proof}
+
+Let now \(M_t = \max \set{Z_1, \dots, Z_t}\) denote the running maximum.
+
+\begin{lemma}[Random Walk 2, Reflection Principle]\label{lem:reflection}
+    For \(k \in \N\) and \(m \in \N_0\) , we have \[
+        \P(M_T \geq k, Z_T = k - m) = \P(Z_T = k + m)
+    \]
+\end{lemma}
+\begin{proof}
+    For every path from \(0\) at time \(0\), with \(M_T \geq k\) and \(Z_T = k - m\), there exists one unique path with \(M_T \geq k\) and \(Z_T = k + n\). For this, reflect at the horizontal axis \(y=k\) when reaching \(k\) for the first time. (Drawing)
+\end{proof}
+\subsubsection{Barrier options in the CRR model.}
+We can use the risk-neutral pricing formula from \ref{thm:34} model:
+\[
+    \pi(H) = \beta_0 B_0 + \alpha_0 S_0 = \sum_{\omega = (y_1,\dots,y_T) \in \Omega} q_{y_1} \cdot \cdots \cdot q_{y_T} \frac{H(\omega)}{B_T} = \E_\Q\frac{H}{B_T}
+\]
+where \(\Q(\set{\omega})=q_{y_1}\cdot \cdots \cdot q_{y_T}\) and \[
+    q_{y_t}= \begin{cases}
+        q &y_t=u\\
+        1-q &y_t=d
+    \end{cases}\quad q = \frac{1+r-d}{u-d}.
+\]
+The random variables \(Y_1, \dots, Y_T\) are i.i.d.\ with \(\Q(\set{Y_t=u})=q=1-\Q(\set{Y_t=d})\) and \(S_t = S_0 \prod_{k=1}^t Y_k\) for \(t=1,\dots,T\). As the payoff depends on the path, the sum consists of \(2^T = \abs[\Omega]\) summands.
+\underline{But}, using results on random walks in \underline{specific} CRR models, we can reduce the number of summands notably. Hence, we want to consider now a specific \(T\)-period CRR model for which we obtain explicit formulas.
+
+Assume \(d=1/u\) and \(1/u < 1 + r < u\) which yields (NA) and completeness.
+Let \((Z_t)\) be a symmetric random walk on \(\mathbb Z\). The connection between the price process of the stock and the random walk is the following: if \((Z_t)\) counts \(+1\), the price increases and \(-1\) if the price decreases. Then \(Z_t\) is the sum of upwards and downwards movements. We can write \[
+    S_t = S_0 \prod_{n=1}^t Y_n = S_0 u^{\frac{t+Z_t}{2}}d^{\frac{t-Z_t}{2}} = S_0 u^{\frac{t+Z_t}{2}-\frac{t-Z_t}{2}} = S_0 u^{Z_t}.
+\]
+\begin{example}
+    Up-and-in call option \[
+        H_{ui}^{call} = (S_T-K)^+ \indic[\max_{0 \leq t \leq T} S_t \geq B]
+    \]
+    with \(K > 0\) strike price and \(B > \max\set{S_0, K}\) a given barrier. The goal is to compute \(\pi(H_{ui}^{call}) = \E_\Q\frac{H_{ui}^{call}}{(1+r)^T}\). We have \begin{align*}
+        \E_\Q\left(H_{ui}^{call}\right)&=\E_\Q (S_T-K)^+ \indic[\max_{0 \leq t \leq T} S_t \geq B]\\
+        &=\underbrace{\E_\Q \left( (S_T-K)^+ \indic[S_T \geq B] \right)}_{\text{European option of type } H=h(S_T)} + \underbrace{\E_\Q \left( (S_T-K)^+ \indic[\max_{0 \leq t \leq T} S_t \geq B, S_T < B] \right)}_{\text{Need joint distribution of }S_T\text{ and }\max_{0 \leq t \leq T} S_t\text{ under }\Q.}
+    \end{align*}
+    \Cref{cor:priceViaBinomialSum} and \(S_T \geq B\) yield \(S_T \geq K\) and we can omit the positive part. Now, we use~\Cref{lem:shouldBe62}. Assumption: the barrier corresponds to exactly one possible stock price, i.e.\ \(B=S_0u^{k_b}\), \(k_b \in \N\). \(S_T < B\) is the case if and only if \(S_0u^{Z_T} < S_0 u^{k_b} \iff Z_T < k_b\). Similarly, \[
+        \max \set{S_0, \dots, S_T} \geq B \iff S_0u^{M_T} \geq S_0 u^{k_b} \iff M_T \geq k_b.
+    \]
+    Thus, we obtain for the second part of the pricing formula (using that \(T\) and \(m+k_b\) have the same parity when \(T+m+k_b\) is even): \[
+        \E_\Q\left( (S_T-K)^+ \indic[\max_0 \leq t \leq T] S_t \geq B, S_t < B \right) = \E_\Q \left( (S_0u^{Z_T}-K)^+\indic[M_T \geq k_b, Z_T < k_b] \right).
+    \]
+    Write this such that~\Cref{lem:shouldBe62} is applicable. The above is equal to \begin{align*}
+        &\sum_{m=1, T+m+k_b \text{ even}}^{T-k_b} \E_\Q\left((S_0u^{Z_T}-K)^+ \indic[M_T \geq k_b, Z_T=k_b-m]\right)\\
+        &= \sum_{m=1, T+m+k_b \text{ even}}^{T-k_b} (S_0u^{k_b-m}-K)^+ \Q(M_T \geq k_b, Z_T=k-m)\\
+        &= \sum_{m=1, T+m+k_b \text{ even}}^{T-k_b} (S_0u^{k_b-m}-K)^+ {T \choose (T+k_b+m)/2} q^{(T+k_b+m)/2}(1-q)^{(T+k_b+m)/2}\\
+        &= \left(\frac{q}{1-q}\right)^{k_b} \sum_{m=1, T+m+k_b \text{ even}}^{T-k_b} (S_0u^{k_b-m}-K)^+ {T \choose \frac{T-k_b-m}{2}}q^{(T-k_b-m)/2}(1-q)^{T+k_b+m}\\
+        &= \left(\frac{q}{1-q}\right)^{k_b} \sum_{n=0}^T (S_0u^{2k_b-T+2n}-K)^+ {T \choose n} q^n (q-1)^{T-n}
+    \end{align*}
+    In total, using \(S_T \geq B\) and~\Cref{cor:priceViaBinomialSum} with \(\underline{n} = \min \set{n > (T-k_b)/2}\), we get \begin{align*}
+        \pi_{ui}^{call} = \frac{1}{(1+r)^T} \E_\Q H_{ui}^{call} &= \frac{1}{(1+r)^T} \sum_{n=\underline{n}}^T (S_0u^{2n-T}-K)^+ {T \choose n} q^n (1-q)^{T-n}\\
+        &+ \left(\frac{q}{1+q}\right)^{k_b} \sum_{n=0}^T (S_0u^{2n-T+2k_b}-K)^+ {T \choose n} q^n (1-q)^{T-n}.
+    \end{align*}
+    Number of summands is at most \(T\) now. Cool!
+\end{example}
+
+\begin{example} Up-and-out-call-option: \[
+        H_{uo}^{call} = \begin{cases}
+            0 &M_T \geq B\\
+            (S_T-K)^+ &\text{else}.
+        \end{cases}
+    \]
+    \(K>0\) and \(B>\max(S_0,K)\). Moreover \[
+        H^{call}=(S_T-K)^+
+    \]
+    is the payoff of the vanilla call. \(H^{call} = H_{ou}^{call}+H_{ui}^{call}\) and hence \[
+        \pi(H_{uo}^{call})=\pi(H^{call})-\pi(H_{ui}^{call}).
+    \]
+    Lookback options: strike \(K\) is traded for its maximum or minimum. Now, we sell for the maximum price \[
+        H_{max}^{put} = \max_{0 \leq t \leq T} (S_t) - S_T.
+    \]
+    Thus \[
+        \pi(H_{max}^{put})=\E_\Q \frac{M_T-S_T}{(1+r)^T} = \E_\Q \frac{M_T}{(1+r)^T}-S_0.
+    \]
+    Now \begin{align*}
+        \E_\Q \max S_t &= \E_\Q \max S_0 u^{Z_t} = \E_\Q S_0 u^{\max Z_t} = \E_\Q S_0 u^{M_T} = \sum_{n=0}^T S_0 u^n \Q(M_T=n)\\
+        &= \sum_{n=0}^T \sum_{\ell=0}^T S_0 u^n \Q(M_T=n, Z_T=n-\ell)\\
+        &= \sum_{n=0}^T \sum_{\ell=0}^T S_0 u^n {T+1 \choose (T-n+\ell)/2} \frac{n+\ell+1}{T+1} q^{(T+n-\ell)/2}(1-q)^{(T-n+\ell)/2}.
+    \end{align*}
+\end{example}
+
+\begin{lemma}\label{lem:shouldBe62}
+    Under \(\Q\), we have for the random walk on \(\mathbb Z\) and it's running maximum \(M_t\) and \(k \in \N\) and \(m \in \N_0\) that \(T\) and \(k+m\) have the same parity: \begin{itemize}
+        \item \(\Q(M_T \geq k, Z_T=k-m)={T \choose (T+k+m)/2} q^{(T+k-m)/2}(1-q)^{(T-k+m)/2}\).
+        \item \(\Q(M_T=k,Z_T=k-m)={T+1 \choose (T-k+m)/2}\frac{k+m+1}{T+1}q^{(T+k-m)/2}(1-q)^{(T-k+m)/2}\).
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    Use (without proof) that
+    \[
+        \frac{\Q(\set{\omega})}{\P(\set{\omega})} = 2^T q^{(T+Z_T(\omega))/2}(1-q)^{(T-Z_T(\omega))/2}.
+    \]
+    Now apply~\Cref{lem:reflection} and~\Cref{lem:randomWalk1}: \begin{align*}
+        \Q(M_T \geq k, Z_T=k-m)&=\sum_{F = \set{\omega: M_T(\omega) \geq b, Z_T(\omega)=k-m}} \Q(\set{\omega})\\
+        &= 2^T q^{(T+k-m)/2}(1-q)^{(T-k+m)/2}\sum_{F} \P(\set{\omega})\\
+        &= 2^T q^{(T+k-m)/2}(1-q)^{(T-k+m)/2}\P(Z_T=k+m)\\
+        &= 2^T \frac{1}{2^T} q^{(T+k-m)/2}(1-q)^{(T-k+m)/2} {T \choose (T+k+m)/2},
+    \end{align*}
+    which shows (a). For (b), we plug in \(\Q(M_T=k,Z_T=k-m)=\Q(M_T \geq k, Z_T=k-m)-\Q(M_T \geq k+1, Z_T=k+1-(m+k)=k-m)\).
+\end{proof}
+
+\subsection{Pricing incomplete markets}
+We assume a finite financial market such that (NA) holds but not every contingent claim must be attainable, i.e.\ the market is in general incomplete.
+\begin{definition}[Superhedging]\label{def:superhedging}
+    Let \(H\) be a contingent claim. A self-financing trading strategy \(\phi\) is called superhedging if \(V_T^\phi \geq H\).
+\end{definition}
+By \[
+        \pi_+(H) = \inf \set{V_0^\phi : \phi \text{ is superhedging}}
+    \]
+we denote the smallest initial investment such that the trading strategy is superhedging (it superreplicates \(H\)). Recall \(V_0^\phi + G_T^\alpha=\frac{V_T^\phi}{B_T}\) and hence \(\pi_+(H) \geq \E_\Q H/B_T\) since \(V_T^\phi \geq H\). Now, \[
+    \pi_-(H) = \sup \set{V_0^\phi : \phi \text{ is self-financing and }V_T^\phi \leq H}.
+\]
+Analogously, \(\pi_-(H) \leq \E_\Q H/B_T\) and hence \(\pi_- \leq \pi_+\). A price for \(H\) that does not allow arbitrage has to be within the open interval \((\pi_-(H), \pi_+(H))\).
+
+If the price lies outside this interval, there is arbitrage. To see this, assume \(\pi(H) > \pi_+(H)\). Then we sell the option for \(\pi(H)\) and realise with \(\pi_+(H)\) a super-hedging strategy. As \(\pi(H) - \pi_+(H) > 0\). We invest this difference in the bond. This yields a riskless gain. Assume otherwise that \(\pi(H) < \pi_-(H)\). Then we sell the option for \(\pi(H)\) and realise with \(\pi_-(H)\) a subhedging strategy. Since \(-(\pi(H)-\pi_-(H)) > 0\), we invest this difference in the bond and again have a riskless gain. Overall, we have\[
+    \pi_-(H) \leq \inf_{\Q \in \cM} \E_\Q \frac{H}{B_T} \leq \sup_{\Q \in \cM} \E_\Q \frac{H}{B_T} \leq \pi_+(H).
+\]
 
 \section{American options}
 \section{Portfolio optimization}
